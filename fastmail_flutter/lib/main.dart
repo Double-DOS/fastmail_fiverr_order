@@ -4,6 +4,7 @@ import 'package:fastmail_flutter/src/pages/crearcuenta_page.dart';
 import 'package:fastmail_flutter/src/pages/home_page.dart';
 import 'package:fastmail_flutter/src/pages/homegrid_page.dart';
 import 'package:fastmail_flutter/src/pages/login_page.dart';
+import 'package:fastmail_flutter/src/pages/register_page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -19,9 +20,10 @@ class MyApp extends StatelessWidget {
         routes: {
           'login': (BuildContext context) => LoginPage(),
           'home': (BuildContext context) => HomePage(),
-          'cargafactura': (BuildContext context) => CargaFacturaPage(),
+          //'cargafactura': (BuildContext context) => CargaFacturaPage(),
           'crearcuenta': (BuildContext context) => CrearCuentaPage(),
           'homegrid': (BuildContext context) => HomeGridPage(),
+          'register': (BuildContext context) => RegisterScreen(),
         },
         theme: ThemeData(primaryColor: Colors.blue),
       ),

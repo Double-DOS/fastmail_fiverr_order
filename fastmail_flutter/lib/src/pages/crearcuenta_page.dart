@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:fastmail_flutter/src/models/cargafactura_model.dart';
 import 'package:fastmail_flutter/src/utils/utils.dart' as utils;
 import 'package:flutter/material.dart';
@@ -29,6 +30,11 @@ class _CrearCuentaPageState extends State<CrearCuentaPage> {
               //_crearPrecio(),
               // _crearDisponible(),
               _crearApellido(),
+              _crearDepartamento(),
+              _crearDireccion(),
+              _crearCelular(),
+              _crearEmail(),
+              SizedBox(height: 30.0),
               _crearBoton(),
             ]),
           ),
@@ -69,19 +75,63 @@ class _CrearCuentaPageState extends State<CrearCuentaPage> {
     );
   }
 
-  Widget _crearPrecio() {
+  Widget _crearDepartamento() {
     return TextFormField(
-      initialValue: cargafactura.valor.toString(),
-      keyboardType: TextInputType.numberWithOptions(decimal: true),
-      decoration: InputDecoration(labelText: 'Precio \$'),
-      onSaved: (value) => cargafactura.valor = double.parse(value),
+      initialValue: cargafactura.titulo,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(labelText: 'Departamento'),
+      onSaved: (value) => cargafactura.titulo = value,
       validator: (value) {
-        if (utils.isNumeric(value)) {
-          return null;
+        if (value.length < 3) {
+          return 'Ingrese un valor correcto';
         } else {
-          return 'Solo se permiten números';
+          return null;
         }
       },
+    );
+  }
+
+  Widget _crearDireccion() {
+    return TextFormField(
+      initialValue: cargafactura.titulo,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(labelText: 'Dirección'),
+      onSaved: (value) => cargafactura.titulo = value,
+      validator: (value) {
+        if (value.length < 3) {
+          return 'Ingrese un valor correcto';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
+  Widget _crearCelular() {
+    return TextFormField(
+      initialValue: cargafactura.titulo,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(labelText: 'Celular'),
+      onSaved: (value) => cargafactura.titulo = value,
+      validator: (value) {
+        if (value.length < 3) {
+          return 'Ingrese un valor correcto';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
+  Widget _crearEmail() {
+    return TextFormField(
+      initialValue: cargafactura.titulo,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(labelText: 'Email'),
+      onSaved: (value) => cargafactura.titulo = value,
+      validator: (value) => EmailValidator.validate(value)
+          ? null
+          : "Formato de correo incorrecto.",
     );
   }
 
@@ -93,16 +143,6 @@ class _CrearCuentaPageState extends State<CrearCuentaPage> {
       label: Text('Guardar'),
       icon: Icon(Icons.save),
       onPressed: _submit,
-    );
-  }
-
-  Widget _crearDisponible() {
-    return SwitchListTile(
-      value: cargafactura.disponible,
-      title: Text('Disponible'),
-      onChanged: (value) => setState(() {
-        cargafactura.disponible = value;
-      }),
     );
   }
 

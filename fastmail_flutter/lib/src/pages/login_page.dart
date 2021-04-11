@@ -22,15 +22,15 @@ class LoginPage extends StatelessWidget {
         children: <Widget>[
           SafeArea(
               child: Container(
-            height: 200.0,
+            height: 175.0,
           )),
           Container(
-            width: size.width * 0.85,
+            width: size.width * 0.90,
             padding: EdgeInsets.symmetric(vertical: 50.0),
             margin: EdgeInsets.symmetric(vertical: 30.0),
             decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(5.0),
+                borderRadius: BorderRadius.circular(12.0),
                 boxShadow: <BoxShadow>[
                   BoxShadow(
                     color: Colors.black26,
@@ -46,16 +46,16 @@ class LoginPage extends StatelessWidget {
                   style: TextStyle(fontSize: 20.0),
                 ),
                 _crearUsuario(bloc),
+                //SizedBox(height: 30.0),
+                //_crearEmail(bloc),
                 SizedBox(height: 30.0),
-                _crearEmail(bloc),
+                _crearPassword(bloc),
                 SizedBox(height: 30.0),
-                // _crearPassword(bloc),
-                // SizedBox(height: 30.0),
                 _crearBoton(bloc, context),
                 SizedBox(height: 30.0),
                 _crearBotonCrearCuenta(context),
                 SizedBox(height: 30.0),
-                _crearBotonOlvidaPass(),
+                _crearBotonOlvidaPass(context),
               ],
             ),
           ),
@@ -76,7 +76,7 @@ class LoginPage extends StatelessWidget {
               child: Text('Ingresar'),
             ),
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0)),
+                borderRadius: BorderRadius.circular(12.0)),
             elevation: 0.0,
             color: Colors.blue,
             textColor: Colors.white,
@@ -100,23 +100,49 @@ class LoginPage extends StatelessWidget {
   //       onPressed: null);
   // }
 
-  Widget _crearBotonOlvidaPass() {
-    return MaterialButton(
-      minWidth: 245.0,
-      height: 40.0,
-      onPressed: () {},
-      color: Colors.blue.shade200,
-      child: Text('Olvidaste tu contraseña?',
-          style: TextStyle(color: Colors.white)),
-    );
+  // Widget _crearBotonOlvidaPass() {
+  //   return MaterialButton(
+  //     minWidth: 245.0,
+  //     height: 40.0,
+  //     onPressed: () {},
+  //     color: Colors.blue.shade200,
+  //     child: Text('Olvidaste tu contraseña?',
+  //         style: TextStyle(color: Colors.white)),
+  //   );
+  // }
+
+  Widget _crearBotonOlvidaPass(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.only(top: 16.0, bottom: 16.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              '',
+            ),
+            InkWell(
+              splashColor: Colors.blueAccent.withOpacity(0.5),
+              onTap: () {
+                _onTappedTextforgotpass(context);
+              },
+              child: Text(
+                ' ¿Olvidaste tu contraseña?',
+                style:
+                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              ),
+            )
+          ],
+        ));
   }
 
   Widget _crearBotonCrearCuenta(BuildContext context) {
     return MaterialButton(
+      padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       minWidth: 245.0,
       height: 40.0,
-      onPressed: () => Navigator.pushNamed(context, 'crearcuenta'),
-      color: Colors.blue.shade200,
+      onPressed: () => Navigator.pushReplacementNamed(context, 'register'),
+      color: Colors.blue,
       child: Text('Crear Cuenta', style: TextStyle(color: Colors.white)),
     );
   }
@@ -139,7 +165,7 @@ class LoginPage extends StatelessWidget {
                   icon: Icon(Icons.lock_outlined, color: Colors.blue),
                   hintText: 'Ingresa tu contraseña',
                   labelText: 'Contraseña',
-                  counterText: snapshot.data,
+                  //    counterText: snapshot.data,
                   errorText: snapshot.error),
               onChanged: bloc.changePassword,
             ));
@@ -195,7 +221,7 @@ class LoginPage extends StatelessWidget {
       height: size.height,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.lightBlue[900],
+        color: Colors.blue,
         //  gradient: LinearGradient(colors: <Color>[
         //  Color.fromRGBO(34, 113, 179, 1.0),
         //  Color.fromRGBO(0, 170, 228, 1.0)
@@ -241,5 +267,9 @@ class LoginPage extends StatelessWidget {
         )
       ],
     );
+  }
+
+  void _onTappedTextforgotpass(BuildContext context) {
+    Navigator.pushReplacementNamed(context, 'login');
   }
 }
