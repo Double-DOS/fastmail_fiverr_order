@@ -8,9 +8,17 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   static var _keyValidationForm = GlobalKey<FormState>();
   TextEditingController _textEditConName = TextEditingController();
+  TextEditingController _textEditApellido = TextEditingController();
+  TextEditingController _textEditDepartamento = TextEditingController();
+  TextEditingController _textEditDireccion = TextEditingController();
+  TextEditingController _textEditCelular = TextEditingController();
   TextEditingController _textEditConEmail = TextEditingController();
-  TextEditingController _textEditConPassword = TextEditingController();
-  TextEditingController _textEditConConfirmPassword = TextEditingController();
+  TextEditingController _textEditNombreFactura = TextEditingController();
+  TextEditingController _textEditNit = TextEditingController();
+  TextEditingController _textEditServicio = TextEditingController();
+
+  // TextEditingController _textEditConPassword = TextEditingController();
+  // TextEditingController _textEditConConfirmPassword = TextEditingController();
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
 
@@ -180,7 +188,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         controller: _textEditConName,
         keyboardType: TextInputType.text,
         textInputAction: TextInputAction.next,
-        validator: _validateUserName,
+        validator: _validateEmpty,
         onFieldSubmitted: (String value) {
           //  FocusScope.of(context).requestFocus(_passwordEmail);
         },
@@ -195,11 +203,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _crearApellido() {
     return Container(
       child: TextFormField(
-        controller: _textEditConEmail,
+        controller: _textEditApellido,
         // focusNode: _crearApellido,
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
-        validator: _validateEmail,
+        validator: _validateEmpty,
         onFieldSubmitted: (String value) {
           //  FocusScope.of(context).requestFocus(_passwordFocus);
         },
@@ -214,11 +222,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _crearDepartamento() {
     return Container(
       child: TextFormField(
-        controller: _textEditConEmail,
+        controller: _textEditDepartamento,
         // focusNode: _crearApellido,
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
-        validator: _validateEmail,
+        validator: _validateEmpty,
         onFieldSubmitted: (String value) {
           //  FocusScope.of(context).requestFocus(_passwordFocus);
         },
@@ -233,11 +241,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _crearDireccion() {
     return Container(
       child: TextFormField(
-        controller: _textEditConEmail,
+        controller: _textEditDireccion,
         // focusNode: _crearApellido,
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
-        validator: _validateEmail,
+        validator: _validateEmpty,
         onFieldSubmitted: (String value) {
           //  FocusScope.of(context).requestFocus(_passwordFocus);
         },
@@ -252,11 +260,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _crearCelular() {
     return Container(
       child: TextFormField(
-        controller: _textEditConEmail,
+        controller: _textEditCelular,
         // focusNode: _crearApellido,
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
-        validator: _validateEmail,
+        validator: _validateEmpty,
         onFieldSubmitted: (String value) {
           //  FocusScope.of(context).requestFocus(_passwordFocus);
         },
@@ -290,11 +298,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _crearNombreFactura() {
     return Container(
       child: TextFormField(
-        controller: _textEditConEmail,
+        controller: _textEditNombreFactura,
         // focusNode: _crearApellido,
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
-        validator: _validateEmail,
+        validator: _validateEmpty,
         onFieldSubmitted: (String value) {
           //  FocusScope.of(context).requestFocus(_passwordFocus);
         },
@@ -309,11 +317,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _crearNit() {
     return Container(
       child: TextFormField(
-        controller: _textEditConEmail,
+        controller: _textEditNit,
         // focusNode: _crearApellido,
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
-        validator: _validateEmail,
+        //validator: _validateEmpty,
         onFieldSubmitted: (String value) {
           //  FocusScope.of(context).requestFocus(_passwordFocus);
         },
@@ -328,11 +336,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _crearServicios() {
     return Container(
       child: TextFormField(
-        controller: _textEditConEmail,
+        controller: _textEditServicio,
         // focusNode: _crearApellido,
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
-        validator: _validateEmail,
+        validator: _validateEmpty,
         onFieldSubmitted: (String value) {
           //  FocusScope.of(context).requestFocus(_passwordFocus);
         },
@@ -392,8 +400,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ));
   }
 
-  String _validateUserName(String value) {
-    return value.trim().isEmpty ? "Name can't be empty" : null;
+  String _validateEmpty(String value) {
+    return value.trim().isEmpty ? "Campo obligatorio" : null;
   }
 
   String _validateEmail(String value) {
@@ -401,7 +409,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
     if (!regex.hasMatch(value)) {
-      return 'Invalid Email';
+      return 'Formato correo electrónico incorrecto';
     } else {
       return null;
     }
