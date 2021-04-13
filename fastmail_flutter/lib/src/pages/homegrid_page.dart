@@ -55,7 +55,7 @@ class HomeGridPageState extends State<HomeGridPage> {
           SizedBox(
             height: 40,
           ),
-          GridHome()
+          //GridHome()
         ],
       ),
     );

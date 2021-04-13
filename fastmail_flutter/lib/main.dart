@@ -1,6 +1,7 @@
 import 'package:fastmail_flutter/src/bloc/provider.dart';
 import 'package:fastmail_flutter/src/pages/carga_factura.dart';
 import 'package:fastmail_flutter/src/pages/crearcuenta_page.dart';
+import 'package:fastmail_flutter/src/pages/gridhome.dart';
 import 'package:fastmail_flutter/src/pages/home_page.dart';
 import 'package:fastmail_flutter/src/pages/homegrid_page.dart';
 import 'package:fastmail_flutter/src/pages/login_page.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
           'home': (BuildContext context) => HomePage(),
           //'cargafactura': (BuildContext context) => CargaFacturaPage(),
           'crearcuenta': (BuildContext context) => CrearCuentaPage(),
-          'homegrid': (BuildContext context) => HomeGridPage(),
+          'homegrid': (BuildContext context) => GridHomePage(),
           'register': (BuildContext context) => RegisterScreen(),
         },
         theme: ThemeData(primaryColor: Colors.blue),

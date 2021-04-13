@@ -1,111 +1,126 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-class GridHome extends StatelessWidget {
-  Items item1 = new Items(
-      title: "Cotizador",
-      subtitle: "",
-      event: "",
-      img: "assets/images/fastmail.png");
+class GridHomePage extends StatefulWidget {
+  @override
+  _GridHomePageState createState() => _GridHomePageState();
+}
 
-  Items item2 = new Items(
-    title: "Mi Cuenta",
-    subtitle: "",
-    event: "",
-    img: "assets/images/fastmail.png",
-  );
-  Items item3 = new Items(
-    title: "Mi Paquete",
-    subtitle: "",
-    event: "",
-    img: "assets/images/fastmail.png",
-  );
-  Items item4 = new Items(
-    title: "Mini Carga",
-    subtitle: "",
-    event: "",
-    img: "assets/images/fastmail.png",
-  );
-  Items item5 = new Items(
-    title: "Pídelo en LINEA",
-    subtitle: "",
-    event: "",
-    img: "assets/images/fastmail.png",
-  );
-  Items item6 = new Items(
-    title: "Notificaciones",
-    subtitle: "",
-    event: "",
-    img: "assets/images/fastmail.png",
-  );
+class _GridHomePageState extends State<GridHomePage> {
+  final List<String> _listItem = [
+    './assets/images/Cotizador.png',
+    './assets/images/Tracking.png',
+    './assets/images/Cuenta.png',
+    './assets/images/MiniCarga.png',
+    './assets/images/EnLinea.png',
+    './assets/images/Notify.png',
+    './assets/images/Facebook.png',
+    './assets/images/Whatsapp.png',
+    './assets/images/Phone.png',
+  ];
 
   @override
   Widget build(BuildContext context) {
-    List<Items> myList = [item1, item2, item3, item4, item5, item6];
-    //var color = Colors.lightBlue;
-    return Flexible(
-      child: GridView.count(
-          childAspectRatio: 1.0,
-          padding: EdgeInsets.only(left: 16, right: 16),
-          crossAxisCount: 2,
-          crossAxisSpacing: 18,
-          mainAxisSpacing: 18,
-          children: myList.map((data) {
-            return Container(
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  //Image.asset(
-                  //  data.img,
-                  //  width: 42,
-                  // ),
-                  SizedBox(
-                    height: 14,
+    return Scaffold(
+      backgroundColor: Colors.blue,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Icon(Icons.menu),
+        title: Text("Inicio"),
+      ),
+      body: SafeArea(
+        child: Container(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                width: double.infinity,
+                height: 250,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/Recuerda2.png'),
+                        fit: BoxFit.cover)),
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      gradient:
+                          LinearGradient(begin: Alignment.bottomRight, colors: [
+                        Colors.black.withOpacity(.4),
+                        Colors.black.withOpacity(.2),
+                      ])),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                        "",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 35,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      SizedBox(
+                        height: 60,
+                      ),
+                    ],
                   ),
-                  Text(
-                    data.title,
-                    // style: GoogleFonts.openSans(
-                    //     textStyle: TextStyle(
-                    //         color: Colors.white,
-                    //         fontSize: 16,
-                    //         fontWeight: FontWeight.w600)),
-                  ),
-                  SizedBox(
-                    height: 8,
-                  ),
-                  Text(
-                    data.subtitle,
-                    // style: GoogleFonts.openSans(
-                    //     textStyle: TextStyle(
-                    //         color: Colors.white38,
-                    //         fontSize: 10,
-                    //         fontWeight: FontWeight.w600)),
-                  ),
-                  SizedBox(
-                    height: 14,
-                  ),
-                  Text(
-                    data.event,
-                    // style: GoogleFonts.openSans(
-                    //     textStyle: TextStyle(
-                    //         color: Colors.white70,
-                    //         fontSize: 11,
-                    //         fontWeight: FontWeight.w600)),
-                  ),
-                ],
+                ),
               ),
-            );
-          }).toList()),
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                  child: GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                children: _listItem
+                    .map(
+                      (item) => InkWell(
+                        splashColor: Colors.white,
+                        child: Card(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                image: DecorationImage(
+                                    image: AssetImage(item),
+                                    fit: BoxFit.cover)),
+                            // child: InkWell(
+                            //   splashColor: Colors.red,
+                            //   onTap: () async {
+                            //     _onTappedCard(context);
+                            //   },
+                            // ),
+                          ),
+                        ),
+                        customBorder: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        onTap: () async {
+                          _onTappedCard(context, item.toString());
+                        },
+                      ),
+                    )
+                    .toList(),
+              ))
+            ],
+          ),
+        ),
+      ),
     );
   }
-}
 
-class Items {
-  String title;
-  String subtitle;
-  String event;
-  String img;
-  Items({this.title, this.subtitle, this.event, this.img});
+  void _onTappedCard(BuildContext context, String item) {
+    if (item == "Cotizador") {
+      Navigator.pushNamed(context, 'login');
+    } else {
+      Navigator.pushNamed(context, 'home');
+    }
+  }
 }
