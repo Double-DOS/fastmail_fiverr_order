@@ -1,5 +1,6 @@
 import 'package:fastmail_flutter/src/bloc/provider.dart';
 import 'package:fastmail_flutter/src/pages/carga_factura.dart';
+import 'package:fastmail_flutter/src/pages/cotizadorPoBox_page.dart';
 import 'package:fastmail_flutter/src/pages/crearcuenta_page.dart';
 import 'package:fastmail_flutter/src/pages/gridhome.dart';
 import 'package:fastmail_flutter/src/pages/home_page.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
           'crearcuenta': (BuildContext context) => CrearCuentaPage(),
           'homegrid': (BuildContext context) => GridHomePage(),
           'register': (BuildContext context) => RegisterScreen(),
+          'cotizador': (BuildContext context) => CotizadorPage(),
         },
         theme: ThemeData(primaryColor: Colors.blue),
       ),
