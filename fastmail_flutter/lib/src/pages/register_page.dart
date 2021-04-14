@@ -32,7 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.blue[900],
       body: SingleChildScrollView(
         child: Padding(
             padding: EdgeInsets.only(top: 32.0),
@@ -105,73 +105,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 _crearNombreFactura(),
                 _crearNit(),
                 _crearServicios(),
-
-                // Container(
-                //   child: TextFormField(
-                //     controller: _textEditConEmail,
-                //     focusNode: _passwordEmail,
-                //     keyboardType: TextInputType.emailAddress,
-                //     textInputAction: TextInputAction.next,
-                //     validator: _validateEmail,
-                //     onFieldSubmitted: (String value) {
-                //       FocusScope.of(context).requestFocus(_passwordFocus);
-                //     },
-                //     decoration: InputDecoration(
-                //         labelText: 'Email',
-                //         //prefixIcon: Icon(Icons.email),
-                //         icon: Icon(Icons.email)),
-                //   ),
-                // ), //text field: email
-                // Container(
-                //   child: TextFormField(
-                //     controller: _textEditConPassword,
-                //     focusNode: _passwordFocus,
-                //     keyboardType: TextInputType.text,
-                //     textInputAction: TextInputAction.next,
-                //     validator: _validatePassword,
-                //     onFieldSubmitted: (String value) {
-                //       FocusScope.of(context)
-                //           .requestFocus(_passwordConfirmFocus);
-                //     },
-                //     obscureText: !isPasswordVisible,
-                //     decoration: InputDecoration(
-                //         labelText: 'Password',
-                //         suffixIcon: IconButton(
-                //           icon: Icon(isPasswordVisible
-                //               ? Icons.visibility
-                //               : Icons.visibility_off),
-                //           onPressed: () {
-                //             setState(() {
-                //               isPasswordVisible = !isPasswordVisible;
-                //             });
-                //           },
-                //         ),
-                //         icon: Icon(Icons.vpn_key)),
-                //   ),
-                // ), //text field: password
-                // Container(
-                //   child: TextFormField(
-                //       controller: _textEditConConfirmPassword,
-                //       focusNode: _passwordConfirmFocus,
-                //       keyboardType: TextInputType.text,
-                //       textInputAction: TextInputAction.done,
-                //       validator: _validateConfirmPassword,
-                //       obscureText: !isConfirmPasswordVisible,
-                //       decoration: InputDecoration(
-                //           labelText: 'Confirm Password',
-                //           suffixIcon: IconButton(
-                //             icon: Icon(isConfirmPasswordVisible
-                //                 ? Icons.visibility
-                //                 : Icons.visibility_off),
-                //             onPressed: () {
-                //               setState(() {
-                //                 isConfirmPasswordVisible =
-                //                     !isConfirmPasswordVisible;
-                //               });
-                //             },
-                //           ),
-                //           icon: Icon(Icons.vpn_key))),
-                // ),
                 _botonGuardar(),
                 _yatienescuenta(),
               ],
