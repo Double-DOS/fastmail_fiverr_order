@@ -6,6 +6,7 @@ import 'package:fastmail_flutter/src/config/api.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
@@ -41,16 +42,22 @@ Future<String> loginn(
   }
 }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key key}) : super(key: key);
 
   @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         body: Stack(children: <Widget>[
-      _crearFondo(context),
-      _loginForm(context),
-    ]));
+          _crearFondo(context),
+          _loginForm(context),
+        ]));
   }
 
   Widget _loginForm(BuildContext context) {
@@ -123,36 +130,22 @@ class LoginPage extends StatelessWidget {
                 ? () => {
                       //ModelLogin modelLogin = ModelLogin(pais: "502",codigo: "53808",contrasena: "1234");
                       //  loadanimation(),
+                      _scaffoldKey.currentState.showSnackBar(new SnackBar(
+                        backgroundColor: Colors.black,
+                        duration: new Duration(seconds: 1),
+                        content: new Row(
+                          children: <Widget>[
+                            new CircularProgressIndicator(),
+                            new Text("  Cargando...")
+                          ],
+                        ),
+                      )),
                       loginn(context, bloc.usuario, bloc.password)
                     } //Navigator.pushReplacementNamed(context, 'homegrid')
                 : null);
       },
     );
   }
-
-  // Widget _crearBotonOlvidaPass() {
-  //   return RaisedButton(
-  //       child: Container(
-  //         padding: EdgeInsets.symmetric(horizontal: 35.0, vertical: 15.0),
-  //         child: Text('Olvidaste tu contraseña?'),
-  //       ),
-  //       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
-  //       elevation: 0.0,
-  //       color: Colors.white,
-  //       textColor: Colors.blue,
-  //       onPressed: null);
-  // }
-
-  // Widget _crearBotonOlvidaPass() {
-  //   return MaterialButton(
-  //     minWidth: 245.0,
-  //     height: 40.0,
-  //     onPressed: () {},
-  //     color: Colors.blue.shade200,
-  //     child: Text('Olvidaste tu contraseña?',
-  //         style: TextStyle(color: Colors.white)),
-  //   );
-  // }
 
   Widget _crearBotonOlvidaPass(BuildContext context) {
     return Container(
@@ -189,11 +182,6 @@ class LoginPage extends StatelessWidget {
       child: Text('Crear Cuenta', style: TextStyle(color: Colors.white)),
     );
   }
-
-  /*_login(LoginBloc bloc,BuildContext context) {
-     print('Email: ${bloc.email} ');
-     print('Password: ${bloc.password}');
-   }*/
 
   Widget _crearPassword(LoginBloc bloc) {
     return StreamBuilder(

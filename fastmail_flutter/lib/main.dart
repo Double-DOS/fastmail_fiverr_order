@@ -8,6 +8,7 @@ import 'package:fastmail_flutter/src/pages/homegrid_page.dart';
 import 'package:fastmail_flutter/src/pages/login_page.dart';
 import 'package:fastmail_flutter/src/pages/register_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 void main() => runApp(MyApp());
 
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
           'cotizador': (BuildContext context) => CotizadorPage(),
         },
         theme: ThemeData(primaryColor: Colors.blue),
+        builder: EasyLoading.init(),
       ),
     );
   }
