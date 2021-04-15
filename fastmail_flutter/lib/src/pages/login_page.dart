@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
+final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
 Future<String> loginn(
     BuildContext context, String coduser, String passw) async {
   var url = 'https://webyte.com.gt/projects/apps/fastmail/login/login.php';
@@ -22,9 +24,13 @@ Future<String> loginn(
       /*showAlertDialog(
             context, "¡" + (data1['message']).replaceAll("#", "ñ") + "!");*/
     } else {
+      var gName = data1['nombres'];
+      var gEmail = data1['email'];
       if (data1['tipousuario'] == 'CLIENTE') {
         //Navigator.pushReplacementNamed(context, '/empleados');
-        Navigator.pushReplacementNamed(context, 'homegrid');
+        Navigator.pushReplacementNamed(context, "homegrid",
+            arguments: {"name": gName, "email": gEmail});
+        //Navigator.pushReplacementNamed(context, 'homegrid');
       } else if (data1['tipousuario'] == 'ADMIN') {
         //Navigator.pushReplacementNamed(context, '/page_mainclientes');
       }
@@ -116,6 +122,7 @@ class LoginPage extends StatelessWidget {
             onPressed: snapshot.hasData
                 ? () => {
                       //ModelLogin modelLogin = ModelLogin(pais: "502",codigo: "53808",contrasena: "1234");
+                      //  loadanimation(),
                       loginn(context, bloc.usuario, bloc.password)
                     } //Navigator.pushReplacementNamed(context, 'homegrid')
                 : null);

@@ -29,6 +29,9 @@ class _GridHomePageState extends State<GridHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, Object> rcvdData =
+        ModalRoute.of(context).settings.arguments;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -44,21 +47,23 @@ class _GridHomePageState extends State<GridHomePage> {
           padding: const EdgeInsets.all(0.0),
           children: <Widget>[
             new UserAccountsDrawerHeader(
-                accountName: new Text("Webyte"),
-                accountEmail: new Text("hola@webyte,com.gt"),
-                currentAccountPicture: new CircleAvatar(
-                  backgroundColor: Colors.red,
-                )),
-            new ListTile(
-              title: new Text('Page One'),
-              trailing: new Icon(Icons.arrow_upward),
+              // backgroundColor:Colors.blue,
+              accountName: new Text(rcvdData['name']),
+              accountEmail: new Text(rcvdData['email']),
+              // currentAccountPicture: new CircleAvatar(
+              //   backgroundColor: Colors.red,
+              // )
             ),
             new ListTile(
-              title: new Text('Page two'),
-              trailing: new Icon(Icons.arrow_downward),
+              title: new Text('Perfil'),
+              trailing: new Icon(Icons.person),
             ),
             new ListTile(
-              title: new Text('Page Close'),
+              title: new Text('Contáctanos'),
+              trailing: new Icon(Icons.mail),
+            ),
+            new ListTile(
+              title: new Text('Salir'),
               trailing: new Icon(Icons.close),
               onTap: () => Navigator.of(context).pop(),
             )

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
 
 class CotizadorPage extends StatefulWidget {
   @override
@@ -14,6 +17,7 @@ class __CotizadorPageState extends State<CotizadorPage> {
   void initState() {
     isPasswordVisible = false;
     isConfirmPasswordVisible = false;
+    loadarticulos(); //AQUI se carga la lista desplegable
     super.initState();
   }
 
@@ -28,32 +32,6 @@ class __CotizadorPageState extends State<CotizadorPage> {
         elevation: 0,
         //leading: Icon(Icons.menu),
         title: Text("Cotizador"),
-      ),
-      drawer: new Drawer(
-        child: new ListView(
-          padding: const EdgeInsets.all(0.0),
-          children: <Widget>[
-            new UserAccountsDrawerHeader(
-                accountName: new Text("Webyte"),
-                accountEmail: new Text("hola@webyte,com.gt"),
-                currentAccountPicture: new CircleAvatar(
-                  backgroundColor: Colors.red,
-                )),
-            new ListTile(
-              title: new Text('Mis Paquetes'),
-              trailing: new Icon(Icons.send),
-            ),
-            new ListTile(
-              title: new Text('Perfil'),
-              trailing: new Icon(Icons.person),
-            ),
-            new ListTile(
-              title: new Text('Versión'),
-              trailing: new Icon(Icons.close),
-              onTap: () => Navigator.of(context).pop(),
-            )
-          ],
-        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -92,10 +70,6 @@ class __CotizadorPageState extends State<CotizadorPage> {
   }
 
   Widget getWidgetRegistrationCard() {
-    final FocusNode _passwordEmail = FocusNode();
-    final FocusNode _passwordFocus = FocusNode();
-    final FocusNode _passwordConfirmFocus = FocusNode();
-
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16.0),
       child: Card(
@@ -117,7 +91,7 @@ class __CotizadorPageState extends State<CotizadorPage> {
                     'Cotizar',
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
-                ), // title: login
+                ),
                 _crearTipoArticulo(),
                 _crearValor(),
                 _crearPeso(),
@@ -132,23 +106,90 @@ class __CotizadorPageState extends State<CotizadorPage> {
   }
 
   Widget _crearTipoArticulo() {
+    //INICIO LISTA DESPLEGABLE
     return Container(
-      child: TextFormField(
-        //   controller: _textEditApellido,
-        // focusNode: _crearApellido,
-        keyboardType: TextInputType.text,
-        textInputAction: TextInputAction.next,
-        validator: _validateEmpty,
-        onFieldSubmitted: (String value) {
-          //  FocusScope.of(context).requestFocus(_passwordFocus);
-        },
-        decoration: InputDecoration(
-            labelText: 'Tipo de Artículo',
-            //prefixIcon: Icon(Icons.email),
-            icon: Icon(Icons.card_giftcard_outlined)),
+      padding: EdgeInsets.only(left: 15, right: 15, top: 5),
+      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            child: DropdownButtonHideUnderline(
+              child: ButtonTheme(
+                alignedDropdown: true,
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  value: _myState,
+                  icon: const Icon(Icons.arrow_downward),
+                  iconSize: 24,
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16,
+                  ),
+                  hint: Text('Seleccionar tipo de artículo'),
+                  onChanged: (String newValue) {
+                    setState(() {
+                      _myState = newValue;
+                      loadarticulos();
+                      print(_myState);
+                    });
+                  },
+                  items: statesList?.map((item) {
+                        return new DropdownMenuItem(
+                          child: new Text(item['name']),
+                          value: item['id'].toString(),
+                        );
+                      })?.toList() ??
+                      [],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
-    ); //text field: email
+    );
+    //FIN LISTA DESPLEGABLE
   }
+
+  List statesList;
+  String _myState;
+
+  Future<String> loadarticulos() async {
+    var url = 'https://webyte.com.gt/projects/apps/fastmail/executequerys.php';
+    final response = await http.post(url,
+        headers: <String, String>{"Accept": "application/json"},
+        body: {"identificador": "ARTICULOS"});
+    //print(response.statusCode);
+    if (response.statusCode == 200) {
+      //print('resultValidLogin Response: ${response.body}');
+      dynamic data1 = jsonDecode(response.body);
+      //print(data1.toString());
+      setState(() {
+        statesList = data1;
+      });
+    } else {
+      //showAlertDialog(context, "¡Ocurrió un error al obtener datos!");
+      //throw Exception('Failed to get data');
+    }
+  }
+
+  // return Container(
+  //   child: TextFormField(
+  //     //   controller: _textEditApellido,
+  //     // focusNode: _crearApellido,
+  //     keyboardType: TextInputType.text,
+  //     textInputAction: TextInputAction.next,
+  //     validator: _validateEmpty,
+  //     onFieldSubmitted: (String value) {
+  //       //  FocusScope.of(context).requestFocus(_passwordFocus);
+  //     },
+  //     decoration: InputDecoration(
+  //         labelText: 'Tipo de Artículo',
+  //         //prefixIcon: Icon(Icons.email),
+  //         icon: Icon(Icons.card_giftcard_outlined)),
+  //   ),
+  // ); //text field: email
+  //}
 
   Widget _crearValor() {
     return Container(
@@ -222,7 +263,7 @@ class __CotizadorPageState extends State<CotizadorPage> {
         ),
         onPressed: () {
           // if (_keyValidationForm.currentState.validate()) {
-          _onTappedButtonRegister();
+          _onTappedButtonCotizar();
           //  }
         },
         shape:
@@ -254,5 +295,31 @@ class __CotizadorPageState extends State<CotizadorPage> {
     return value.length < 5 ? 'Min 5 char required' : null;
   }
 
-  void _onTappedButtonRegister() {}
+  Future<String> _onTappedButtonCotizar() async {
+    var url = 'https://webyte.com.gt/projects/apps/fastmail/executequerys.php';
+    final response = await http.post(url, headers: <String, String>{
+      "Accept": "application/json"
+    }, body: {
+      "identificador": "COTIZAR",
+      "codpais": "502",
+      "codarticulo": "1",
+      "articulo": "-",
+      "valor": "108",
+      "peso": "1",
+      "destino": "Ciudad Capital",
+      "tipocliente": "Fastmail"
+    });
+    //print(response.statusCode);
+    if (response.statusCode == 200) {
+      //print('resultValidLogin Response: ${response.body}');
+      dynamic data1 = jsonDecode(response.body);
+      print(data1.toString());
+      // setState(() {
+      //   statesList = data1;
+      // });
+    } else {
+      //showAlertDialog(context, "¡Ocurrió un error al obtener datos!");
+      //throw Exception('Failed to get data');
+    }
+  }
 }
