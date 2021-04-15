@@ -1,5 +1,39 @@
 import 'package:fastmail_flutter/src/bloc/provider.dart';
+//import 'package:fastmail_flutter/src/services/services.login.dart';
+import 'package:fastmail_flutter/src/models/model.login.dart';
 import 'package:flutter/material.dart';
+import 'package:fastmail_flutter/src/config/api.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:async';
+
+Future<String> loginn(
+    BuildContext context, String coduser, String passw) async {
+  var url = 'https://webyte.com.gt/projects/apps/fastmail/login/login.php';
+  final response = await http.post(url,
+      headers: <String, String>{"Accept": "application/json"},
+      body: {"codpais": "502", "codigo": coduser, "contrasena": passw});
+  print(response.statusCode);
+  if (response.statusCode == 200) {
+    print('resultValidLogin Response: ${response.body}');
+    dynamic data1 = jsonDecode(response.body);
+    print(data1.toString());
+    if (data1['verifica'] == 'false') {
+      /*showAlertDialog(
+            context, "¡" + (data1['message']).replaceAll("#", "ñ") + "!");*/
+    } else {
+      if (data1['tipousuario'] == 'CLIENTE') {
+        //Navigator.pushReplacementNamed(context, '/empleados');
+        Navigator.pushReplacementNamed(context, 'homegrid');
+      } else if (data1['tipousuario'] == 'ADMIN') {
+        //Navigator.pushReplacementNamed(context, '/page_mainclientes');
+      }
+    }
+  } else {
+    //showAlertDialog(context, "¡Ocurrió un error al obtener datos!");
+    //throw Exception('Failed to get data');
+  }
+}
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key key}) : super(key: key);
@@ -80,7 +114,10 @@ class LoginPage extends StatelessWidget {
             color: Colors.blue,
             textColor: Colors.white,
             onPressed: snapshot.hasData
-                ? () => Navigator.pushReplacementNamed(context, 'homegrid')
+                ? () => {
+                      //ModelLogin modelLogin = ModelLogin(pais: "502",codigo: "53808",contrasena: "1234");
+                      loginn(context, bloc.usuario, bloc.password)
+                    } //Navigator.pushReplacementNamed(context, 'homegrid')
                 : null);
       },
     );
@@ -146,10 +183,10 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  // _login(LoginBloc bloc,BuildContext context) {
-  //   //print('Email: ${bloc.email} ');
-  //   //print('Password: ${bloc.password}');
-  // }
+  /*_login(LoginBloc bloc,BuildContext context) {
+     print('Email: ${bloc.email} ');
+     print('Password: ${bloc.password}');
+   }*/
 
   Widget _crearPassword(LoginBloc bloc) {
     return StreamBuilder(
@@ -203,8 +240,8 @@ class LoginPage extends StatelessWidget {
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
                 icon: Icon(Icons.person, color: Colors.blue),
-                hintText: 'Ingresa tu usuario',
-                labelText: 'Usuario',
+                hintText: 'Ingresa tu cdigo',
+                labelText: 'Codigo',
                 // counterText: snapshot.data,
                 errorText: snapshot.error),
             onChanged: bloc.changeUsuario,
