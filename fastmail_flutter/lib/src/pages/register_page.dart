@@ -255,7 +255,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 alignedDropdown: true,
                 child: DropdownButton<String>(
                   isExpanded: true,
-                  value: _myState,
+                  value: _myState2,
                   icon: const Icon(Icons.arrow_downward),
                   iconSize: 20,
                   style: TextStyle(
@@ -265,15 +265,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   hint: Text('Seleccionar el departamento'),
                   onChanged: (String newValue) {
                     setState(() {
-                      _myState = newValue;
+                      _myState2 = newValue;
                       loadDeptos();
-                      print(_myState);
+                      print(_myState2);
                     });
                   },
-                  items: statesList?.map((item) {
+                  items: statesList2?.map((item) {
                         return new DropdownMenuItem(
                           child: new Text(item['departamento']),
-                          value: item['ID'].toString(),
+                          value: item['departamento'].toString(),
                         );
                       })?.toList() ??
                       [],
@@ -286,13 +286,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  List statesList;
-  String _myState;
+  List statesList2;
+  String _myState2;
 
   Future<String> loadDeptos() async {
     var url = Api.baseUrl + Api.queryselects;
 
-    if (_myState != "") {
+    if (_myState2 != "") {
       final response = await http.post(url,
           headers: <String, String>{"Accept": "application/json"},
           body: {"identificador": "DEPARTAMENTOS"});
@@ -301,7 +301,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         print('loadDeptos Response: ${response.body}');
         dynamic data1 = jsonDecode(response.body);
         setState(() {
-          statesList = data1;
+          statesList2 = data1;
         });
       } else {}
     }

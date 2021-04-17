@@ -166,7 +166,8 @@ class __CotizadorPageState extends State<CotizadorPage> {
 
   Future<String> loadarticulos() async {
     var url = 'https://webyte.com.gt/projects/apps/fastmail/executequerys.php';
-    print("estado" + _myState);
+    print("estado");
+    print(_myState);
     if (_myState != "") {
       final response = await http.post(url,
           headers: <String, String>{"Accept": "application/json"},
@@ -185,24 +186,6 @@ class __CotizadorPageState extends State<CotizadorPage> {
       }
     }
   }
-
-  // return Container(
-  //   child: TextFormField(
-  //     //   controller: _textEditApellido,
-  //     // focusNode: _crearApellido,
-  //     keyboardType: TextInputType.text,
-  //     textInputAction: TextInputAction.next,
-  //     validator: _validateEmpty,
-  //     onFieldSubmitted: (String value) {
-  //       //  FocusScope.of(context).requestFocus(_passwordFocus);
-  //     },
-  //     decoration: InputDecoration(
-  //         labelText: 'Tipo de Artículo',
-  //         //prefixIcon: Icon(Icons.email),
-  //         icon: Icon(Icons.card_giftcard_outlined)),
-  //   ),
-  // ); //text field: email
-  //}
 
   Widget _crearValor() {
     return Container(
