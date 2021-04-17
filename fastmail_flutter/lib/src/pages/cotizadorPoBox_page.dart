@@ -92,6 +92,15 @@ class __CotizadorPageState extends State<CotizadorPage> {
                     style: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                 ),
+                SizedBox(height: 15.0),
+                Container(
+                  alignment: Alignment.center,
+                  width: double.infinity,
+                  child: Text(
+                    'Ingresas los datos de tus paquetes para calcular el costo de una importación, no importando tamaño y/o características.',
+                    style: TextStyle(fontSize: 11.0, color: Colors.blue),
+                  ),
+                ),
                 _crearTipoArticulo(),
                 _crearValor(),
                 _crearPeso(),
