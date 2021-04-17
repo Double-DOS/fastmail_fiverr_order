@@ -141,7 +141,7 @@ class __CotizadorPageState extends State<CotizadorPage> {
                       _myState = newValue;
                       loadarticulos();
                       print("valor" + _myState);
-                       print("name" + _myState);
+                      print("name" + _myState);
                     });
                   },
                   items: statesList?.map((item) {
@@ -166,22 +166,24 @@ class __CotizadorPageState extends State<CotizadorPage> {
 
   Future<String> loadarticulos() async {
     var url = 'https://webyte.com.gt/projects/apps/fastmail/executequerys.php';
-     if (_myState != "") {
-    final response = await http.post(url,
-        headers: <String, String>{"Accept": "application/json"},
-        body: {"identificador": "ARTICULOS"});
-    //print(response.statusCode);
-    if (response.statusCode == 200) {
-      // print('resultloadarticulos Response: ${response.body}');
-      dynamic data1 = jsonDecode(response.body);
-      print(data1.toString());
-      setState(() {
-        statesList = data1;
-      });
-    } else {
-      //showAlertDialog(context, "¡Ocurrió un error al obtener datos!");
-      //throw Exception('Failed to get data');
-    } 
+    print("estado" + _myState);
+    if (_myState != "") {
+      final response = await http.post(url,
+          headers: <String, String>{"Accept": "application/json"},
+          body: {"identificador": "ARTICULOS"});
+      //print(response.statusCode);
+      if (response.statusCode == 200) {
+        // print('resultloadarticulos Response: ${response.body}');
+        dynamic data1 = jsonDecode(response.body);
+        print(data1.toString());
+        setState(() {
+          statesList = data1;
+        });
+      } else {
+        //showAlertDialog(context, "¡Ocurrió un error al obtener datos!");
+        //throw Exception('Failed to get data');
+      }
+    }
   }
 
   // return Container(
