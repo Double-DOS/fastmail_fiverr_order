@@ -12,7 +12,7 @@ final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
 Future<String> loginn(
     BuildContext context, String coduser, String passw) async {
-  var url = 'https://webyte.com.gt/projects/apps/fastmail/login/login.php';
+  var url = Api.baseUrl + Api.login;
   final response = await http.post(url,
       headers: <String, String>{"Accept": "application/json"},
       body: {"codpais": "502", "codigo": coduser, "contrasena": passw});
@@ -191,7 +191,7 @@ class _LoginPageState extends State<LoginPage> {
             padding: EdgeInsets.symmetric(horizontal: 20.0),
             child: TextField(
               obscureText: true,
-              keyboardType: TextInputType.emailAddress,
+              keyboardType: TextInputType.text,
               decoration: InputDecoration(
                   icon: Icon(Icons.lock_outlined, color: Colors.blue),
                   hintText: 'Ingresa tu contraseña',

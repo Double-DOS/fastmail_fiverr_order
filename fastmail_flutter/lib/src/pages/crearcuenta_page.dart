@@ -1,4 +1,5 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:fastmail_flutter/src/bloc/provider.dart';
 import 'package:fastmail_flutter/src/models/cargafactura_model.dart';
 import 'package:fastmail_flutter/src/utils/utils.dart' as utils;
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class _CrearCuentaPageState extends State<CrearCuentaPage> {
 
   @override
   Widget build(BuildContext context) {
+    //final bloc = Provider.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Crear cuenta'),
@@ -27,13 +29,13 @@ class _CrearCuentaPageState extends State<CrearCuentaPage> {
             key: formKey,
             child: Column(children: <Widget>[
               _crearNombre(),
-              //_crearPrecio(),
-              // _crearDisponible(),
               _crearApellido(),
               _crearDepartamento(),
               _crearDireccion(),
               _crearCelular(),
               _crearEmail(),
+              _crearPassword(),
+              _crearConfirmPassword(),
               SizedBox(height: 30.0),
               _crearBoton(),
             ]),
@@ -132,6 +134,38 @@ class _CrearCuentaPageState extends State<CrearCuentaPage> {
       validator: (value) => EmailValidator.validate(value)
           ? null
           : "Formato de correo incorrecto.",
+    );
+  }
+
+  Widget _crearPassword() {
+    return TextFormField(
+      initialValue: cargafactura.titulo,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(labelText: 'Contraseña'),
+      onSaved: (value) => cargafactura.titulo = value,
+      validator: (value) {
+        if (value.length < 6) {
+          return 'Ingrese un valor correcto';
+        } else {
+          return null;
+        }
+      },
+    );
+  }
+
+  Widget _crearConfirmPassword() {
+    return TextFormField(
+      initialValue: cargafactura.titulo,
+      textCapitalization: TextCapitalization.sentences,
+      decoration: InputDecoration(labelText: 'Confirmar contraseña'),
+      onSaved: (value) => cargafactura.titulo = value,
+      validator: (value) {
+        if (value.length < 6) {
+          return 'Ingrese un valor correcto';
+        } else {
+          return null;
+        }
+      },
     );
   }
 

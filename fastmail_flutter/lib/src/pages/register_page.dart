@@ -1,4 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:fastmail_flutter/src/config/api.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+Future<String> _createAccountToAPI(
+    BuildContext context,
+    String nombres,
+    String apellidos,
+    String departamento,
+    String direccion,
+    String dpi,
+    String celular,
+    String email,
+    String contrasena,
+    String nombrefactura,
+    String idtributario,
+    String interes,
+    String tipocliente) async {
+  var url = Api.baseUrl + Api.register;
+  final response = await http.post(url, headers: <String, String>{
+    "Accept": "application/json"
+  }, body: {
+    "codpais": "502",
+    "nombres": nombres,
+    "contrasena": apellidos,
+    "departamento": departamento,
+    "direccion": direccion,
+    "dpi": dpi,
+    "celular": celular,
+    "email": email,
+    "contrasena": contrasena,
+    "nombrefactura": nombrefactura,
+    "idtributario": idtributario,
+    "interes": interes,
+    "tipocliente": tipocliente
+  });
+  print(response.statusCode);
+  if (response.statusCode == 200) {
+    dynamic data1 = jsonDecode(response.body);
+    print(data1.toString());
+    if (data1['valida'] == 'true') {
+      //DESPLEGAR ERROR DE (ERROR AL CREAR LA CUENTA)
+      loginn(context, data1['codigofm'], contrasena);
+    } else {}
+  } else {}
+}
+
+Future<String> loginn(
+    BuildContext context, String coduser, String passw) async {
+  var url = Api.baseUrl + Api.login;
+  final response = await http.post(url,
+      headers: <String, String>{"Accept": "application/json"},
+      body: {"codpais": "502", "codigo": coduser, "contrasena": passw});
+  print(response.statusCode);
+  if (response.statusCode == 200) {
+    print('resultValidLogin Response: ${response.body}');
+    dynamic data1 = jsonDecode(response.body);
+    print(data1.toString());
+    if (data1['verifica'] == 'false') {
+    } else {
+      var gName = data1['nombres'];
+      var gEmail = data1['email'];
+      if (data1['tipousuario'] == 'CLIENTE') {
+        Navigator.pushReplacementNamed(context, "homegrid",
+            arguments: {"name": gName, "email": gEmail});
+      } else if (data1['tipousuario'] == 'ADMIN') {}
+    }
+  } else {}
+}
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -13,6 +82,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _textEditDireccion = TextEditingController();
   TextEditingController _textEditCelular = TextEditingController();
   TextEditingController _textEditConEmail = TextEditingController();
+  TextEditingController _textEditConfirmContrasena = TextEditingController();
+  TextEditingController _textEditContrasena = TextEditingController();
   TextEditingController _textEditNombreFactura = TextEditingController();
   TextEditingController _textEditNit = TextEditingController();
   TextEditingController _textEditServicio = TextEditingController();
@@ -26,6 +97,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void initState() {
     isPasswordVisible = false;
     isConfirmPasswordVisible = false;
+    loadDeptos();
     super.initState();
   }
 
@@ -70,9 +142,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget getWidgetRegistrationCard() {
-    final FocusNode _passwordEmail = FocusNode();
+    /*final FocusNode _passwordEmail = FocusNode();
     final FocusNode _passwordFocus = FocusNode();
-    final FocusNode _passwordConfirmFocus = FocusNode();
+    final FocusNode _passwordConfirmFocus = FocusNode();*/
 
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16.0),
@@ -93,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   width: double.infinity,
                   child: Text(
                     'Crear Cuenta',
-                    style: TextStyle(fontSize: 18.0, color: Colors.black),
+                    style: TextStyle(fontSize: 19.0, color: Colors.black),
                   ),
                 ), // title: login
                 _crearNombre(), //text field : user name
@@ -102,6 +174,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 _crearDireccion(),
                 _crearCelular(),
                 _crearEmail(),
+                _crearContrasena(),
+                _crearConfirmContrasena(),
                 _crearNombreFactura(),
                 _crearNit(),
                 _crearServicios(),
@@ -153,7 +227,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _crearDepartamento() {
-    return Container(
+    /*return Container(
       child: TextFormField(
         controller: _textEditDepartamento,
         // focusNode: _crearApellido,
@@ -168,7 +242,66 @@ class _RegisterScreenState extends State<RegisterScreen> {
             //prefixIcon: Icon(Icons.email),
             icon: Icon(Icons.map)),
       ),
-    ); //text field: email
+    );*/ //text field: email
+    //padding: EdgeInsets.only(left: 15, right: 15, top: 5),
+    //color: Colors.white,
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            child: DropdownButtonHideUnderline(
+              child: ButtonTheme(
+                alignedDropdown: true,
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  value: _myState,
+                  icon: const Icon(Icons.arrow_downward),
+                  iconSize: 20,
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16,
+                  ),
+                  hint: Text('Seleccionar el departamento'),
+                  onChanged: (String newValue) {
+                    setState(() {
+                      _myState = newValue;
+                      loadDeptos();
+                      print(_myState);
+                    });
+                  },
+                  items: statesList?.map((item) {
+                        return new DropdownMenuItem(
+                          child: new Text(item['departamento']),
+                          value: item['id'].toString(),
+                        );
+                      })?.toList() ??
+                      [],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List statesList;
+  String _myState;
+
+  Future<String> loadDeptos() async {
+    var url = Api.baseUrl + Api.queryselects;
+    final response = await http.post(url,
+        headers: <String, String>{"Accept": "application/json"},
+        body: {"identificador": "DEPARTAMENTOS"});
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      print('loadDeptos Response: ${response.body}');
+      dynamic data1 = jsonDecode(response.body);
+      setState(() {
+        statesList = data1;
+      });
+    } else {}
   }
 
   Widget _crearDireccion() {
@@ -226,6 +359,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
             icon: Icon(Icons.email_outlined)),
       ),
     ); //text field: email
+  }
+
+  Widget _crearContrasena() {
+    return Container(
+      child: TextFormField(
+        controller: _textEditContrasena,
+        obscureText: true,
+        keyboardType: TextInputType.text,
+        textInputAction: TextInputAction.next,
+        validator: _validateEmpty,
+        onFieldSubmitted: (String value) {
+          //  FocusScope.of(context).requestFocus(_passwordEmail);
+        },
+        decoration: InputDecoration(
+            labelText: 'Contraseña',
+            //prefixIcon: Icon(Icons.email),
+            icon: Icon(Icons.perm_identity)),
+      ),
+    );
+  }
+
+  Widget _crearConfirmContrasena() {
+    return Container(
+      child: TextFormField(
+        controller: _textEditConfirmContrasena,
+        obscureText: true,
+        keyboardType: TextInputType.text,
+        textInputAction: TextInputAction.next,
+        validator: _validateEmpty,
+        onFieldSubmitted: (String value) {
+          //  FocusScope.of(context).requestFocus(_passwordEmail);
+        },
+        decoration: InputDecoration(
+            labelText: 'Confirmar Contraseña',
+            //prefixIcon: Icon(Icons.email),
+            icon: Icon(Icons.perm_identity)),
+      ),
+    );
   }
 
   Widget _crearNombreFactura() {
@@ -349,7 +520,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   String _validatePassword(String value) {
-    return value.length < 5 ? 'Min 5 char required' : null;
+    return value.length < 6 ? 'Min 6 char required' : null;
   }
 
   String _validateConfirmPassword(String value) {

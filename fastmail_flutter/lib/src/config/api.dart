@@ -3,4 +3,5 @@ class Api {
 
   static const login = '/login/login.php';
   static const register = '/login/register.php';
+  static const queryselects = '/executequerys.php';
 }
