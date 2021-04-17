@@ -23,7 +23,7 @@ Future<String> _createAccountToAPI(
   }, body: {
     "codpais": "502",
     "nombres": nombres,
-    "contrasena": apellidos,
+    "apellidos": apellidos,
     "departamento": departamento,
     "direccion": direccion,
     "dpi": dpi,
@@ -273,7 +273,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   items: statesList?.map((item) {
                         return new DropdownMenuItem(
                           child: new Text(item['departamento']),
-                          value: item['id'].toString(),
+                          value: item['ID'].toString(),
                         );
                       })?.toList() ??
                       [],
@@ -291,17 +291,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<String> loadDeptos() async {
     var url = Api.baseUrl + Api.queryselects;
-    final response = await http.post(url,
-        headers: <String, String>{"Accept": "application/json"},
-        body: {"identificador": "DEPARTAMENTOS"});
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      print('loadDeptos Response: ${response.body}');
-      dynamic data1 = jsonDecode(response.body);
-      setState(() {
-        statesList = data1;
-      });
-    } else {}
+
+    if (_myState != "") {
+      final response = await http.post(url,
+          headers: <String, String>{"Accept": "application/json"},
+          body: {"identificador": "DEPARTAMENTOS"});
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        print('loadDeptos Response: ${response.body}');
+        dynamic data1 = jsonDecode(response.body);
+        setState(() {
+          statesList = data1;
+        });
+      } else {}
+    }
   }
 
   Widget _crearDireccion() {
