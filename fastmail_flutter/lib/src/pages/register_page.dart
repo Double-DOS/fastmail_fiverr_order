@@ -17,33 +17,74 @@ Future<String> _createAccountToAPI(
     String idtributario,
     String interes,
     String tipocliente) async {
-  var url = Api.baseUrl + Api.register;
-  final response = await http.post(url, headers: <String, String>{
+  /**VALIDA QUE EL EMAIL NO EXISTA */
+  bool validEmail = true;
+  bool validCelular = true;
+  var url2 = Api.baseUrl + Api.queryselects;
+  final response2 = await http.post(url2, headers: <String, String>{
     "Accept": "application/json"
   }, body: {
+    "identificador": "VALIDEMAIL",
     "codpais": "502",
-    "nombres": nombres,
-    "apellidos": apellidos,
-    "departamento": departamento,
-    "direccion": direccion,
-    "dpi": dpi,
-    "celular": celular,
     "email": email,
-    "contrasena": contrasena,
-    "nombrefactura": nombrefactura,
-    "idtributario": idtributario,
-    "interes": interes,
-    "tipocliente": tipocliente
   });
-  print(response.statusCode);
-  if (response.statusCode == 200) {
-    dynamic data1 = jsonDecode(response.body);
-    print(data1.toString());
-    if (data1['valida'] == 'true') {
-      //DESPLEGAR ERROR DE (ERROR AL CREAR LA CUENTA)
-      loginn(context, data1['codigofm'], contrasena);
+  print(response2.statusCode);
+  if (response2.statusCode == 200) {
+    print('_verifyEmailOnFastmail Response: ${response2.body}');
+    dynamic data2 = jsonDecode(response2.body);
+    if (data2['cant'] == '500') {
+    } else {
+      validEmail = false;
+    }
+  }
+
+  var url3 = Api.baseUrl + Api.queryselects;
+  final response3 = await http.post(url3, headers: <String, String>{
+    "Accept": "application/json"
+  }, body: {
+    "identificador": "VALIDCELULAR",
+    "codpais": "502",
+    "celular": celular,
+  });
+  print(response3.statusCode);
+  if (response3.statusCode == 200) {
+    print('_verifyCelularOnFastmail Response: ${response3.body}');
+    dynamic data3 = jsonDecode(response3.body);
+    if (data3['cant'] == '500') {
+    } else {
+      validCelular = false;
+    }
+  }
+
+  if ((validEmail != false) && (validCelular != false)) {
+    var url = Api.baseUrl + Api.register;
+    final response = await http.post(url, headers: <String, String>{
+      "Accept": "application/json"
+    }, body: {
+      "codpais": "502",
+      "nombres": nombres,
+      "apellidos": apellidos,
+      "departamento": departamento,
+      "direccion": direccion,
+      "dpi": dpi,
+      "celular": celular,
+      "email": email,
+      "contrasena": contrasena,
+      "nombrefactura": nombrefactura,
+      "idtributario": idtributario,
+      "interes": interes,
+      "tipocliente": tipocliente
+    });
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      dynamic data1 = jsonDecode(response.body);
+      print(data1.toString());
+      if (data1['valida'] == 'true') {
+        //DESPLEGAR ERROR DE (ERROR AL CREAR LA CUENTA)
+        loginn(context, data1['codigofm'], contrasena);
+      } else {}
     } else {}
-  } else {}
+  }
 }
 
 Future<String> loginn(
@@ -78,7 +119,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   static var _keyValidationForm = GlobalKey<FormState>();
   TextEditingController _textEditConName = TextEditingController();
   TextEditingController _textEditApellido = TextEditingController();
-  TextEditingController _textEditDepartamento = TextEditingController();
+  //TextEditingController _textEditDepartamento = TextEditingController();
   TextEditingController _textEditDireccion = TextEditingController();
   TextEditingController _textEditCelular = TextEditingController();
   TextEditingController _textEditConEmail = TextEditingController();
@@ -86,12 +127,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _textEditContrasena = TextEditingController();
   TextEditingController _textEditNombreFactura = TextEditingController();
   TextEditingController _textEditNit = TextEditingController();
-  TextEditingController _textEditServicio = TextEditingController();
 
   // TextEditingController _textEditConPassword = TextEditingController();
   // TextEditingController _textEditConConfirmPassword = TextEditingController();
+  //
+  FocusNode myFocusNodeEmail;
+  FocusNode myFocusNodeCelular;
+  //
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
+
+  String _servicioInteres;
+  //PARA EL LISTADO DEPARTAMENTOS
+  String _departamentSelected;
+  List statesList2;
+  String _myState2;
+  //PARA EL CHECKBOX
+  bool _checked = false;
 
   @override
   void initState() {
@@ -100,6 +152,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     loadDeptos();
     super.initState();
   }
+
+// Your Custom API check.
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +199,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     /*final FocusNode _passwordEmail = FocusNode();
     final FocusNode _passwordFocus = FocusNode();
     final FocusNode _passwordConfirmFocus = FocusNode();*/
-
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16.0),
       child: Card(
@@ -170,7 +223,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ), // title: login
                 _crearNombre(), //text field : user name
                 _crearApellido(),
-                _crearDepartamento(),
+                Center(child: _crearDepartamento()),
                 _crearDireccion(),
                 _crearCelular(),
                 _crearEmail(),
@@ -179,6 +232,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 _crearNombreFactura(),
                 _crearNit(),
                 _crearServicios(),
+                Center(child: _crearClienteProamerica()),
                 _botonGuardar(),
                 _yatienescuenta(),
               ],
@@ -194,6 +248,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: TextFormField(
         controller: _textEditConName,
         keyboardType: TextInputType.text,
+        maxLength: 45,
         textInputAction: TextInputAction.next,
         validator: _validateEmpty,
         onFieldSubmitted: (String value) {
@@ -212,6 +267,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: TextFormField(
         controller: _textEditApellido,
         // focusNode: _crearApellido,
+        maxLength: 45,
         keyboardType: TextInputType.emailAddress,
         textInputAction: TextInputAction.next,
         validator: _validateEmpty,
@@ -227,24 +283,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _crearDepartamento() {
-    /*return Container(
-      child: TextFormField(
-        controller: _textEditDepartamento,
-        // focusNode: _crearApellido,
-        keyboardType: TextInputType.emailAddress,
-        textInputAction: TextInputAction.next,
-        validator: _validateEmpty,
-        onFieldSubmitted: (String value) {
-          //  FocusScope.of(context).requestFocus(_passwordFocus);
-        },
-        decoration: InputDecoration(
-            labelText: 'Departamento',
-            //prefixIcon: Icon(Icons.email),
-            icon: Icon(Icons.map)),
-      ),
-    );*/ //text field: email
-    //padding: EdgeInsets.only(left: 15, right: 15, top: 5),
-    //color: Colors.white,
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -266,7 +304,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   onChanged: (String newValue) {
                     setState(() {
                       _myState2 = newValue;
-                      loadDeptos();
+                      _departamentSelected = _myState2;
+                      //loadDeptos();
                       print(_myState2);
                     });
                   },
@@ -286,12 +325,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  List statesList2;
-  String _myState2;
-
   Future<String> loadDeptos() async {
     var url = Api.baseUrl + Api.queryselects;
-
     if (_myState2 != "") {
       final response = await http.post(url,
           headers: <String, String>{"Accept": "application/json"},
@@ -303,7 +338,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         setState(() {
           statesList2 = data1;
         });
-      } else {}
+      }
     }
   }
 
@@ -313,6 +348,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         controller: _textEditDireccion,
         // focusNode: _crearApellido,
         keyboardType: TextInputType.emailAddress,
+        maxLength: 99,
         textInputAction: TextInputAction.next,
         validator: _validateEmpty,
         onFieldSubmitted: (String value) {
@@ -332,6 +368,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         controller: _textEditCelular,
         // focusNode: _crearApellido,
         keyboardType: TextInputType.emailAddress,
+        maxLength: 25,
         textInputAction: TextInputAction.next,
         validator: _validateEmpty,
         onFieldSubmitted: (String value) {
@@ -346,22 +383,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _crearEmail() {
-    return Container(
-      child: TextFormField(
-        controller: _textEditConEmail,
-        // focusNode: _crearApellido,
-        keyboardType: TextInputType.emailAddress,
-        textInputAction: TextInputAction.next,
-        validator: _validateEmail,
-        onFieldSubmitted: (String value) {
-          //  FocusScope.of(context).requestFocus(_passwordFocus);
-        },
-        decoration: InputDecoration(
-            labelText: 'Correo Electrónico',
-            //prefixIcon: Icon(Icons.email),
-            icon: Icon(Icons.email_outlined)),
-      ),
-    ); //text field: email
+    return Focus(
+        child: TextFormField(
+          controller: _textEditConEmail,
+          // focusNode: _crearApellido,
+          keyboardType: TextInputType.emailAddress,
+          maxLength: 45,
+          textInputAction: TextInputAction.next,
+          validator: _validateEmail,
+          onFieldSubmitted: (String value) {
+            //  FocusScope.of(context).requestFocus(_passwordFocus);
+          },
+          decoration: InputDecoration(
+              labelText: 'Correo Electrónico',
+              //prefixIcon: Icon(Icons.email),
+              icon: Icon(Icons.email_outlined)),
+        ),
+        onFocusChange: (hasFocus) {});
+    //text field: email
   }
 
   Widget _crearContrasena() {
@@ -370,6 +409,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         controller: _textEditContrasena,
         obscureText: true,
         keyboardType: TextInputType.text,
+        maxLength: 20,
         textInputAction: TextInputAction.next,
         validator: _validateEmpty,
         onFieldSubmitted: (String value) {
@@ -389,8 +429,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         controller: _textEditConfirmContrasena,
         obscureText: true,
         keyboardType: TextInputType.text,
+        maxLength: 20,
         textInputAction: TextInputAction.next,
-        validator: _validateEmpty,
+        validator: validatePassword,
         onFieldSubmitted: (String value) {
           //  FocusScope.of(context).requestFocus(_passwordEmail);
         },
@@ -408,6 +449,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         controller: _textEditNombreFactura,
         // focusNode: _crearApellido,
         keyboardType: TextInputType.emailAddress,
+        maxLength: 35,
         textInputAction: TextInputAction.next,
         validator: _validateEmpty,
         onFieldSubmitted: (String value) {
@@ -427,6 +469,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         controller: _textEditNit,
         // focusNode: _crearApellido,
         keyboardType: TextInputType.emailAddress,
+        maxLength: 15,
         textInputAction: TextInputAction.next,
         //validator: _validateEmpty,
         onFieldSubmitted: (String value) {
@@ -441,7 +484,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _crearServicios() {
-    return Container(
+    /* return Container(
       child: TextFormField(
         controller: _textEditServicio,
         // focusNode: _crearApellido,
@@ -456,7 +499,59 @@ class _RegisterScreenState extends State<RegisterScreen> {
             //prefixIcon: Icon(Icons.email),
             icon: Icon(Icons.miscellaneous_services)),
       ),
-    ); //text field: email
+    );*/
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            child: DropdownButtonHideUnderline(
+              child: ButtonTheme(
+                alignedDropdown: true,
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  value: _myState2,
+                  icon: const Icon(Icons.arrow_downward),
+                  iconSize: 20,
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16,
+                  ),
+                  hint: Text('¿Qué servicios te interesan?'),
+                  onChanged: (String newValue) {
+                    setState(() {
+                      _servicioInteres = newValue;
+                      print(_servicioInteres);
+                    });
+                  },
+                  items: <String>['P.O. Box', 'Mini Carga', 'P.O. Box', 'Otros']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _crearClienteProamerica() {
+    return Container(
+      child: CheckboxListTile(
+        title: Text("Soy Cliente Promerica"),
+        value: _checked,
+        onChanged: (bool value) {
+          setState(() {
+            _checked = value;
+          });
+        },
+      ),
+    );
   }
 
   Widget _botonGuardar() {
@@ -473,8 +568,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
           style: TextStyle(fontSize: 16.0),
         ),
         onPressed: () {
+          String _tipoCliente;
+          if (_checked = true) {
+            _tipoCliente = 'Promerica';
+          } else {
+            _tipoCliente = 'Fastmail';
+          }
           if (_keyValidationForm.currentState.validate()) {
-            _onTappedButtonRegister();
+            _createAccountToAPI(
+                context,
+                _textEditConName.text,
+                _textEditApellido.text,
+                _departamentSelected,
+                _textEditDireccion.text,
+                "0",
+                _textEditCelular.text,
+                _textEditConEmail.text,
+                _textEditContrasena.text,
+                _textEditNombreFactura.text,
+                _textEditNit.text,
+                _servicioInteres,
+                _tipoCliente);
           }
         },
         shape:
@@ -522,6 +636,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
+  Future<String> _verifyEmailOnFastmailBD(String email) async {
+    var url = Api.baseUrl + Api.queryselects;
+    final response = await http.post(url, headers: <String, String>{
+      "Accept": "application/json"
+    }, body: {
+      "identificador": "VALIDEMAIL",
+      "codpais": "502",
+      "email": email,
+    });
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      print('_verifyEmailOnFastmail Response: ${response.body}');
+      dynamic data1 = jsonDecode(response.body);
+      if (data1['cant'] == '500') {
+      } else {}
+    } else {}
+  }
+
   String _validatePassword(String value) {
     return value.length < 6 ? 'Min 6 char required' : null;
   }
@@ -530,9 +662,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return value.length < 5 ? 'Min 5 char required' : null;
   }
 
-  void _onTappedButtonRegister() {}
-
   void _onTappedTextlogin() {
     Navigator.pushReplacementNamed(context, 'login');
+  }
+
+  String validatePassword(String value) {
+    print("valorrr $value passsword ${_textEditContrasena.text}");
+    if (value != _textEditContrasena.text) {
+      return "Las contraseñas no coinciden";
+    }
+    return null;
   }
 }
