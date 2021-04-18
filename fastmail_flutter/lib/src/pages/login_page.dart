@@ -6,7 +6,6 @@ import 'package:fastmail_flutter/src/config/api.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
