@@ -32,7 +32,7 @@ Future<String> _createAccountToAPI(
   if (response2.statusCode == 200) {
     print('_verifyEmailOnFastmail Response: ${response2.body}');
     dynamic data2 = jsonDecode(response2.body);
-    if (data2['cant'] == '500') {
+    if (data2['Cant'] == '500') {
     } else {
       validEmail = false;
     }
@@ -305,7 +305,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     setState(() {
                       _myState2 = newValue;
                       _departamentSelected = _myState2;
-                      //loadDeptos();
+                      // loadDeptos();
                       print(_myState2);
                     });
                   },
@@ -327,7 +327,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<String> loadDeptos() async {
     var url = Api.baseUrl + Api.queryselects;
-    if (_myState2 != "") {
+    if (_myState2 == null) {
       final response = await http.post(url,
           headers: <String, String>{"Accept": "application/json"},
           body: {"identificador": "DEPARTAMENTOS"});
@@ -510,7 +510,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 alignedDropdown: true,
                 child: DropdownButton<String>(
                   isExpanded: true,
-                  value: _myState2,
+                  value: _servicioInteres,
                   icon: const Icon(Icons.arrow_downward),
                   iconSize: 20,
                   style: TextStyle(

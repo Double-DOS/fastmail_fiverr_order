@@ -59,10 +59,12 @@ class _GridHomePageState extends State<GridHomePage> {
             new ListTile(
               title: new Text('Perfil'),
               trailing: new Icon(Icons.person),
+              onTap: () => Navigator.pushNamed(context, 'account'),
             ),
             new ListTile(
-              title: new Text('Contáctanos'),
+              title: new Text('Visítanos'),
               trailing: new Icon(Icons.mail),
+              onTap: () => Navigator.pushNamed(context, 'account'),
             ),
             new ListTile(
               title: new Text('Salir'),
