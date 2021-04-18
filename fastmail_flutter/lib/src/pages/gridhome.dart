@@ -1,5 +1,7 @@
+import 'package:fastmail_flutter/src/bloc/hyperlink.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class GridHomePage extends StatefulWidget {
   @override
@@ -134,31 +136,50 @@ class _GridHomePageState extends State<GridHomePage> {
                     children: _listItem
                         .map(
                           (item) => InkWell(
-                            splashColor: Colors.white,
-                            child: Card(
-                              color: Colors.transparent,
-                              elevation: 0,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    image: DecorationImage(
-                                        image: AssetImage(item),
-                                        fit: BoxFit.cover)),
-                                // child: InkWell(
-                                //   splashColor: Colors.red,
-                                //   onTap: () async {
-                                //     _onTappedCard(context);
-                                //   },
-                                // ),
+                              splashColor: Colors.white,
+                              child: Card(
+                                color: Colors.transparent,
+                                elevation: 0,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      image: DecorationImage(
+                                          image: AssetImage(item),
+                                          fit: BoxFit.cover)),
+                                ),
                               ),
-                            ),
-                            customBorder: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            onTap: () async {
-                              _onTappedCard(context, item.toString());
-                            },
-                          ),
+                              customBorder: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              onTap: () async {
+                                if (item == "./assets/images/Cotizador.png") {
+                                  Navigator.pushNamed(context, 'cotizador');
+                                } else if (item ==
+                                    "./assets/images/Cuenta.png") {
+                                  Navigator.pushNamed(context, 'account');
+                                } else if (item ==
+                                    "./assets/images/Facebook.png") {
+                                  if (await canLaunch(
+                                      "https://www.facebook.com/fastmailgt/")) {
+                                    await launch(
+                                        "https://www.facebook.com/fastmailgt/");
+                                  }
+                                } else if (item ==
+                                    "./assets/images/Whatsapp.png") {
+                                  var whatsappUrl =
+                                      "whatsapp://send?phone=+50242440319";
+                                  await canLaunch(whatsappUrl)
+                                      ? launch(whatsappUrl)
+                                      : launch(
+                                          "https://play.google.com/store/apps/details?id=com.whatsapp&hl=es_GT&gl=US");
+                                } else if (item ==
+                                    "./assets/images/Phone.png") {
+                                  launch("tel:+50222464646");
+                                }
+                              }
+                              // _onTappedCard(context, item.toString());
+                              //},
+                              ),
                         )
                         .toList(),
                   ))
@@ -175,8 +196,11 @@ class _GridHomePageState extends State<GridHomePage> {
     print(item.contains("Cotizador"));
     if (item == "./assets/images/Cotizador.png") {
       Navigator.pushNamed(context, 'cotizador');
-    } else {
-      Navigator.pushNamed(context, 'home');
-    }
+    } else if (item == "./assets/images/Cuenta.png") {
+      Navigator.pushNamed(context, 'account');
+    } else if (item == "./assets/images/Facebook.png") {
+      Hyperlink('https://guimgonzalez.business/', 'Awesome website!');
+    } else if (item == "./assets/images/Whatsapp.png") {
+    } else if (item == "./assets/images/Facebook.png") {}
   }
 }

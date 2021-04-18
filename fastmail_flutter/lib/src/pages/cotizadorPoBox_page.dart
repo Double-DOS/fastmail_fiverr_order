@@ -261,7 +261,7 @@ class __CotizadorPageState extends State<CotizadorPage> {
         decoration: InputDecoration(
             labelText: 'Peso',
             //prefixIcon: Icon(Icons.email),
-            icon: Icon(Icons.business_center_outlined)),
+            icon: Icon(Icons.shopping_bag_outlined)),
       ),
     ); //text field: email
   }
@@ -621,7 +621,7 @@ class __CotizadorPageState extends State<CotizadorPage> {
                           new ListTile(
                             leading: new MyBullet(),
                             title: new Text(
-                                'S aplica se hará cobro por peso volumétrico.'),
+                                'Si aplica se hará cobro por peso volumétrico.'),
                           ),
                           new ListTile(
                             leading: new MyBullet(),
