@@ -160,6 +160,12 @@ class _GridHomePageState extends State<GridHomePage> {
                                     "./assets/images/Cuenta.png") {
                                   Navigator.pushNamed(context, 'account');
                                 } else if (item ==
+                                    "./assets/images/MiniCarga.png") {
+                                  Navigator.pushNamed(context, 'minicarga');
+                                } else if (item ==
+                                    "./assets/images/EnLinea.png") {
+                                  Navigator.pushNamed(context, 'pidelinea');
+                                } else if (item ==
                                     "./assets/images/Facebook.png") {
                                   if (await canLaunch(
                                       "https://www.facebook.com/fastmailgt/")) {

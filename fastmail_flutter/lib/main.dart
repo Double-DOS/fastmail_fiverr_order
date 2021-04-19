@@ -2,7 +2,10 @@ import 'package:fastmail_flutter/src/bloc/provider.dart';
 import 'package:fastmail_flutter/src/pages/account_page.dart';
 import 'package:fastmail_flutter/src/pages/carga_factura.dart';
 import 'package:fastmail_flutter/src/pages/cotizadorPoBox_page.dart';
+import 'package:fastmail_flutter/src/pages/cotizador_minicarga_page.dart';
 import 'package:fastmail_flutter/src/pages/gridhome.dart';
+import 'package:fastmail_flutter/src/pages/minicarga_page.dart';
+import 'package:fastmail_flutter/src/pages/pidelolinea_page.dart';
 import 'package:fastmail_flutter/src/pages/tmp.dart';
 import 'package:fastmail_flutter/src/pages/login_page.dart';
 import 'package:fastmail_flutter/src/pages/register_page.dart';
@@ -26,6 +29,9 @@ class MyApp extends StatelessWidget {
           'register': (BuildContext context) => RegisterScreen(),
           'cotizador': (BuildContext context) => CotizadorPage(),
           'account': (BuildContext context) => AccountPage(),
+          'minicarga': (BuildContext context) => MiniCargaPage(),
+          'ctminicarga': (BuildContext context) => CTMiniCargaPage(),
+          'pidelinea': (BuildContext context) => PideloEnLineaPage(),
         },
         theme: ThemeData(primaryColor: Colors.blue),
         builder: EasyLoading.init(),
