@@ -20,6 +20,7 @@ Future<String> _createAccountToAPI(
   /**VALIDA QUE EL EMAIL NO EXISTA */
   bool validEmail = true;
   bool validCelular = true;
+
   var url2 = Api.baseUrl + Api.queryselects;
   final response2 = await http.post(url2, headers: <String, String>{
     "Accept": "application/json"
@@ -32,9 +33,12 @@ Future<String> _createAccountToAPI(
   if (response2.statusCode == 200) {
     print('_verifyEmailOnFastmail Response: ${response2.body}');
     dynamic data2 = jsonDecode(response2.body);
-    if (data2['Cant'] == '500') {
-    } else {
+    print(data2.toString());
+    print(int.parse(data2[0]['cantt']));
+    if (int.parse(data2[0]['cantt']) == 0) {
       validEmail = false;
+    } else {
+      validEmail = true;
     }
   }
 
@@ -50,13 +54,24 @@ Future<String> _createAccountToAPI(
   if (response3.statusCode == 200) {
     print('_verifyCelularOnFastmail Response: ${response3.body}');
     dynamic data3 = jsonDecode(response3.body);
-    if (data3['cant'] == '500') {
-    } else {
+    if (int.parse(data3[0]['cantt']) == 0) {
       validCelular = false;
+    } else {
+      validCelular = true;
     }
   }
-
-  if ((validEmail != false) && (validCelular != false)) {
+  print(validEmail.toString() + "---" + validCelular.toString());
+  if ((validEmail == true) || (validCelular == true)) {
+    if (validEmail == true) {
+      showMessage(context, "Advertencia",
+          "¡Error, ya existe una cuenta registrada con el email Ingresado!");
+    }
+    if (validCelular == true) {
+      showMessage(context, "Advertencia",
+          "¡Error, ya existe una cuenta registrada con ese numero de celular!");
+    }
+  }
+  if ((validEmail == false) && (validCelular == false)) {
     var url = Api.baseUrl + Api.register;
     final response = await http.post(url, headers: <String, String>{
       "Accept": "application/json"
@@ -81,6 +96,11 @@ Future<String> _createAccountToAPI(
       print(data1.toString());
       if (data1['valida'] == 'true') {
         //DESPLEGAR ERROR DE (ERROR AL CREAR LA CUENTA)
+        showMessage(
+            context,
+            "Advertencia",
+            "¡Su cuenta ha sido creada exitosamente! Su codigo Fastmail es: " +
+                data1['codigofm']);
         loginn(context, data1['codigofm'], contrasena);
       } else {}
     } else {}
@@ -108,6 +128,29 @@ Future<String> loginn(
       } else if (data1['tipousuario'] == 'ADMIN') {}
     }
   } else {}
+}
+
+showMessage(BuildContext context, String _dtittle, String _dmsg) {
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {},
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text(_dtittle),
+    content: Text(_dmsg),
+    actions: [
+      okButton,
+    ],
+  );
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
 
 class RegisterScreen extends StatefulWidget {
@@ -196,9 +239,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget getWidgetRegistrationCard() {
-    /*final FocusNode _passwordEmail = FocusNode();
-    final FocusNode _passwordFocus = FocusNode();
-    final FocusNode _passwordConfirmFocus = FocusNode();*/
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16.0),
       child: Card(
@@ -300,12 +340,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     color: Colors.black54,
                     fontSize: 16,
                   ),
-                  hint: Text('Seleccionar el departamento'),
+                  hint: Text('Seleccione el departamento'),
                   onChanged: (String newValue) {
                     setState(() {
                       _myState2 = newValue;
                       _departamentSelected = _myState2;
-                      // loadDeptos();
                       print(_myState2);
                     });
                   },
@@ -484,22 +523,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _crearServicios() {
-    /* return Container(
-      child: TextFormField(
-        controller: _textEditServicio,
-        // focusNode: _crearApellido,
-        keyboardType: TextInputType.emailAddress,
-        textInputAction: TextInputAction.next,
-        validator: _validateEmpty,
-        onFieldSubmitted: (String value) {
-          //  FocusScope.of(context).requestFocus(_passwordFocus);
-        },
-        decoration: InputDecoration(
-            labelText: '¿Qué servicios te interesan?',
-            //prefixIcon: Icon(Icons.email),
-            icon: Icon(Icons.miscellaneous_services)),
-      ),
-    );*/
     return Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -524,8 +547,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       print(_servicioInteres);
                     });
                   },
-                  items: <String>['P.O. Box', 'Mini Carga', 'P.O. Box', 'Otros']
-                      .map<DropdownMenuItem<String>>((String value) {
+                  items: <String>[
+                    'P.O. Box',
+                    'Mini Carga',
+                    'P.O. Box / Mini Carga',
+                    'Otros'
+                  ].map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value),
