@@ -596,7 +596,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         onPressed: () {
           String _tipoCliente;
-          if (_checked = true) {
+          if (_checked == true) {
             _tipoCliente = 'Promerica';
           } else {
             _tipoCliente = 'Fastmail';
