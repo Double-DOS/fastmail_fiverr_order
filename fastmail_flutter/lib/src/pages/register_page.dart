@@ -133,7 +133,9 @@ Future<String> loginn(
 showMessage(BuildContext context, String _dtittle, String _dmsg) {
   Widget okButton = FlatButton(
     child: Text("OK"),
-    onPressed: () {},
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
   );
 
   // set up the AlertDialog
