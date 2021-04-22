@@ -409,7 +409,7 @@ class __PideloEnLineaPageState extends State<PideloEnLineaPage> {
       final response = await http.post(url, headers: <String, String>{
         "Accept": "application/json"
       }, body: {
-        "identificador": "COTIZAR",
+        //"identificador": "COTIZAR",
         "codpais": "502",
         "codarticulo": _myState.toString(),
         "articulo": _namearticulo.toString(),

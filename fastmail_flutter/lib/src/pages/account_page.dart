@@ -15,15 +15,13 @@ class __AccountPageState extends State<AccountPage> {
   static var _keyValidationForm = GlobalKey<FormState>();
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
-  String _codigofastmail = '54047';
+  String _codigofastmail = '53808';
   TextEditingController _textEditConName = TextEditingController();
   TextEditingController _textEditApellido = TextEditingController();
   //TextEditingController _textEditDepartamento = TextEditingController();
   TextEditingController _textEditDireccion = TextEditingController();
   TextEditingController _textEditCelular = TextEditingController();
   TextEditingController _textEditConEmail = TextEditingController();
-  TextEditingController _textEditConfirmContrasena = TextEditingController();
-  TextEditingController _textEditContrasena = TextEditingController();
   TextEditingController _textEditNombreFactura = TextEditingController();
   TextEditingController _textEditNit = TextEditingController();
 
@@ -31,6 +29,7 @@ class __AccountPageState extends State<AccountPage> {
   void initState() {
     isPasswordVisible = false;
     isConfirmPasswordVisible = false; //AQUI se carga la lista desplegable
+    _getInfoCliente();
     super.initState();
   }
 
@@ -455,7 +454,7 @@ class __AccountPageState extends State<AccountPage> {
         ),
         onPressed: () {
           if (_keyValidationForm.currentState.validate()) {
-            _createAccountToAPI(
+            _updateAccountToAPI(
                 context,
                 _textEditConName.text,
                 _textEditApellido.text,
@@ -472,7 +471,7 @@ class __AccountPageState extends State<AccountPage> {
     );
   }
 
-  Future<String> _createAccountToAPI(
+  Future<String> _updateAccountToAPI(
       BuildContext context,
       String nombres,
       String apellidos,
@@ -521,11 +520,12 @@ class __AccountPageState extends State<AccountPage> {
     }
 
     if ((validEmail != false) && (validCelular != false)) {
-      var url = Api.baseUrl + Api.register;
+      var url = Api.baseUrl + Api.updatequerys;
       final response = await http.post(url, headers: <String, String>{
         "Accept": "application/json"
       }, body: {
         "codpais": "502",
+        "codigo": _codigofastmail,
         "nombres": nombres,
         "apellidos": apellidos,
         "direccion": direccion,
@@ -543,6 +543,32 @@ class __AccountPageState extends State<AccountPage> {
           //loginn(context, data1['codigofm'], contrasena);
         } else {}
       } else {}
+    }
+  }
+
+  Future<String> _getInfoCliente() async {
+    var url = Api.baseUrl + Api.queryselects;
+
+    final response = await http.post(url, headers: <String, String>{
+      "Accept": "application/json"
+    }, body: {
+      "codpais": "502",
+      "identificador": "GETINFOPERSONAL",
+      "codigo": _codigofastmail
+    });
+    if (response.statusCode == 200) {
+      dynamic data1 = jsonDecode(response.body);
+      print(data1.toString());
+
+      _textEditConName.text = data1[0]['Nombres'].toString();
+      _textEditApellido.text = data1[0]['Apellidos'].toString();
+      _textEditDireccion.text = data1[0]['Direccion'].toString();
+      _textEditCelular.text = data1[0]['celular'].toString();
+      _textEditConEmail.text = data1[0]['email'].toString();
+      _textEditNombreFactura.text = data1[0]['Nomfactura'].toString();
+      _textEditNit.text = data1[0]['idtributario'].toString();
+    } else {
+      //_showdetailprice = false;
     }
   }
 }

@@ -16,6 +16,8 @@ class __CotizadorPageState extends State<CotizadorPage> {
   TextEditingController _textEditPeso = TextEditingController();
   TextEditingController _textEditConEmail = TextEditingController();
 
+  String _noCotizacion = "";
+
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
   String _namearticulo;
@@ -323,6 +325,7 @@ class __CotizadorPageState extends State<CotizadorPage> {
         ),
         onPressed: () {
           // if (_keyValidationForm.currentState.validate()) {
+          FocusScope.of(context).requestFocus(new FocusNode());
           _onTappedButtonCotizar();
           //  }
         },
@@ -347,7 +350,7 @@ class __CotizadorPageState extends State<CotizadorPage> {
         ),
         onPressed: () {
           // if (_keyValidationForm.currentState.validate()) {
-          _onTappedButtonCotizar();
+          _onTappedEnvioCotizacion();
           //  }
         },
         shape:
@@ -390,7 +393,7 @@ class __CotizadorPageState extends State<CotizadorPage> {
         "tipocliente": "Fastmail" //debemos asignar la variable segun el cliente
       });
       if (response.statusCode == 200) {
-        print("prueba envío" +
+        /*print("prueba envío" +
             " " +
             _myState.toString() +
             " " +
@@ -400,7 +403,7 @@ class __CotizadorPageState extends State<CotizadorPage> {
             " " +
             _textEditPeso.text.toString() +
             " " +
-            _destinovalue);
+            _destinovalue);*/
         //print('resultValidLogin Response: ${response.body}');
         dynamic data1 = jsonDecode(response.body);
         print(data1.toString());
@@ -415,6 +418,7 @@ class __CotizadorPageState extends State<CotizadorPage> {
         _seguro = data1['seguro'].toString();
         _almacenaje = data1['almacenaje'].toString();
         _polizamayor = data1['polizamayor'].toString();
+        _noCotizacion = data1['idcotizacion'].toString();
         //_showdetailprice = true;
         print(_showdetailprice);
         setState(() {
@@ -430,6 +434,25 @@ class __CotizadorPageState extends State<CotizadorPage> {
             _fleteinterior = false;
           }
         });
+      } else {
+        //_showdetailprice = false;
+      }
+    }
+  }
+
+  Future<String> _onTappedEnvioCotizacion() async {
+    var url = Api.baseUrl + Api.actionsphp;
+    if (_textEditConEmail.text.toString() != null) {
+      final response = await http.post(url, headers: <String, String>{
+        "Accept": "application/json"
+      }, body: {
+        "codpais": "502",
+        "identificador": "SEND_MAILCOTIZACION",
+        "nocotizacion": _noCotizacion,
+        "email": _textEditConEmail.text.toString(),
+      });
+      if (response.statusCode == 200) {
+        dynamic data1 = jsonDecode(response.body);
       } else {
         //_showdetailprice = false;
       }
