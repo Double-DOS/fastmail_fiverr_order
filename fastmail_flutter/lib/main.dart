@@ -2,6 +2,7 @@ import 'package:fastmail_flutter/src/bloc/provider.dart';
 import 'package:fastmail_flutter/src/pages/account_page.dart';
 import 'package:fastmail_flutter/src/pages/carga_factura.dart';
 import 'package:fastmail_flutter/src/pages/cotizadorPoBox_page.dart';
+import 'package:fastmail_flutter/src/pages/cotizador_Courier.dart';
 import 'package:fastmail_flutter/src/pages/cotizador_minicarga_page.dart';
 import 'package:fastmail_flutter/src/pages/gridhome.dart';
 import 'package:fastmail_flutter/src/pages/minicarga_page.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
           'minicarga': (BuildContext context) => MiniCargaPage(),
           'ctminicarga': (BuildContext context) => CTMiniCargaPage(),
           'pidelinea': (BuildContext context) => PideloEnLineaPage(),
+          'cotiza_courier': (BuildContext context) => CotizadorCourierPage()
         },
         theme: ThemeData(primaryColor: Colors.blue),
         builder: EasyLoading.init(),

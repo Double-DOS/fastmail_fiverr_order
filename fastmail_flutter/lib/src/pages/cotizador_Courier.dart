@@ -4,22 +4,25 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
-class CTMiniCargaPage extends StatefulWidget {
+class CotizadorCourierPage extends StatefulWidget {
   @override
-  __CTMiniCargaPageState createState() => __CTMiniCargaPageState();
+  __CotizadorCourierPageState createState() => __CotizadorCourierPageState();
 }
 
-class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
+class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
   static var _keyValidationForm = GlobalKey<FormState>();
   TextEditingController _textEditValor = TextEditingController();
   TextEditingController _textEditPeso = TextEditingController();
   TextEditingController _textEditConEmail = TextEditingController();
 
+  String _tipoDP = '';
+  String _envioUrgNormal = '';
+  String _destinoEnvio = '';
+
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
   String _namearticulo;
   bool _showdetailprice = false;
-  bool _fleteinterior = false;
   String _destinovalue;
   String _subtotal = "";
   String _total = "";
@@ -35,7 +38,7 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
   void initState() {
     isPasswordVisible = false;
     isConfirmPasswordVisible = false;
-    loadarticulos(); //AQUI se carga la lista desplegable
+    //loadarticulos(); //AQUI se carga la lista desplegable
     super.initState();
   }
 
@@ -49,7 +52,7 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
         backgroundColor: Colors.blue[900],
         elevation: 0,
         //leading: Icon(Icons.menu),
-        title: Text("Mini Carga"),
+        title: Text("Cotizador Courier"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -58,14 +61,14 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
               children: <Widget>[
                 // getWidgetImageLogo(),
                 getWidgetRegistrationCard(),
-                getWidgetPriceCard(),
+                //getWidgetPriceCard(),
               ],
             )),
       ),
     );
   }
 
-  Widget getDestino() {
+  /*Widget getDestino() {
     return DropdownButton<String>(
       isExpanded: true,
       value: _myState,
@@ -89,7 +92,7 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
         );
       }).toList(),
     );
-  }
+  }*/
 
   Widget getWidgetRegistrationCard() {
     return Padding(
@@ -119,17 +122,19 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
                   alignment: Alignment.center,
                   width: double.infinity,
                   child: Text(
-                    'Ingresas los datos de tus paquetes para calcular el costo de una importación, no importando tamaño y/o características.',
+                    'Cotiza el envío de documentos y/o paquetes a cualquier parte del mundo bajo la modalidad de urgente o normal.',
                     style: TextStyle(fontSize: 11.0, color: Colors.blue),
                   ),
                 ),
-                _crearTipoArticulo(),
-                _crearValor(),
+                _crearTipo(),
+                _crearEnvioNormalUrgente(),
+                _crearDestinoEnvio(),
+                //_crearValor(),
                 _crearPeso(),
-                _crearDestino(),
+                //_crearDestino(),
 
                 //getDestino(),
-                _botonGuardar()
+                _botonCalcular()
               ],
             ),
           ),
@@ -138,7 +143,7 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
     );
   }
 
-  Widget _crearTipoArticulo() {
+  Widget _crearTipo() {
     //INICIO LISTA DESPLEGABLE
     return Container(
       padding: EdgeInsets.only(left: 15, right: 15, top: 5),
@@ -151,30 +156,28 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
               child: ButtonTheme(
                 alignedDropdown: true,
                 child: DropdownButton<String>(
-                  isExpanded: true,
-                  value: _myState,
-                  icon: const Icon(Icons.arrow_downward),
-                  iconSize: 24,
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 16,
-                  ),
-                  hint: Text('Seleccionar tipo de artículo'),
-                  onChanged: (String newValue) {
-                    setState(() {
-                      _myState = newValue;
-                      //loadarticulos();
-                      print(_myState);
-                    });
-                  },
-                  items: statesList?.map((item) {
-                        return new DropdownMenuItem(
-                          child: new Text(item['name'].toString()),
-                          value: item['id'].toString(),
-                        );
-                      })?.toList() ??
-                      [],
-                ),
+                    isExpanded: true,
+                    value: _tipoDP,
+                    icon: const Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 16,
+                    ),
+                    hint: Text('Seleccionar tipo'),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        _tipoDP = newValue;
+                        //loadarticulos();
+                        print(_tipoDP);
+                      });
+                    },
+                    items: <String>['Documento', 'Paquete'].map((String value) {
+                      return new DropdownMenuItem<String>(
+                        value: value.toString(),
+                        child: new Text(value),
+                      );
+                    }).toList()),
               ),
             ),
           ),
@@ -184,32 +187,100 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
     //FIN LISTA DESPLEGABLE
   }
 
-  List statesList;
-  String _myState;
-
-  Future<String> loadarticulos() async {
-    var url = 'https://webyte.com.gt/projects/apps/fastmail/executequerys.php';
-
-    if (_myState == null) {
-      final response = await http.post(url,
-          headers: <String, String>{"Accept": "application/json"},
-          body: {"identificador": "ARTICULOS"});
-      //print(response.statusCode);
-      if (response.statusCode == 200) {
-        // print('resultloadarticulos Response: ${response.body}');
-        dynamic data1 = jsonDecode(response.body);
-        print(data1.toString());
-        setState(() {
-          statesList = data1;
-        });
-      } else {
-        //showAlertDialog(context, "¡Ocurrió un error al obtener datos!");
-        //throw Exception('Failed to get data');
-      }
-    }
+  Widget _crearEnvioNormalUrgente() {
+    //INICIO LISTA DESPLEGABLE
+    return Container(
+      padding: EdgeInsets.only(left: 15, right: 15, top: 5),
+      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            child: DropdownButtonHideUnderline(
+              child: ButtonTheme(
+                alignedDropdown: true,
+                child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: _envioUrgNormal,
+                    icon: const Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 16,
+                    ),
+                    hint: Text('Seleccionar tipo envío'),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        _envioUrgNormal = newValue;
+                        print(_envioUrgNormal);
+                      });
+                    },
+                    items: <String>['Normal', 'Urgente'].map((String value) {
+                      return new DropdownMenuItem<String>(
+                        value: value.toString(),
+                        child: new Text(value),
+                      );
+                    }).toList()),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    //FIN LISTA DESPLEGABLE
   }
 
-  Widget _crearEmail() {
+  Widget _crearDestinoEnvio() {
+    //INICIO LISTA DESPLEGABLE
+    return Container(
+      padding: EdgeInsets.only(left: 15, right: 15, top: 5),
+      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            child: DropdownButtonHideUnderline(
+              child: ButtonTheme(
+                alignedDropdown: true,
+                child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: _destinoEnvio,
+                    icon: const Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 16,
+                    ),
+                    hint: Text('Seleccionar Destino'),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        _destinoEnvio = newValue;
+                        print(_destinoEnvio);
+                      });
+                    },
+                    items: <String>[
+                      'Miami',
+                      'Resto de Estados Unidos',
+                      'Centroamérica',
+                      'Latinoameérica y Caribe',
+                      'Europa',
+                      'Asia'
+                    ].map((String value) {
+                      return new DropdownMenuItem<String>(
+                        value: value.toString(),
+                        child: new Text(value),
+                      );
+                    }).toList()),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    //FIN LISTA DESPLEGABLE
+  }
+
+  /*Widget _crearEmail() {
     return Container(
       child: TextFormField(
         controller: _textEditConEmail,
@@ -245,13 +316,12 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
         icon: Icon(Icons.monetization_on_sharp),
       ),
     )); //text field: email
-  }
+  }*/
 
   Widget _crearPeso() {
     return Container(
       child: TextFormField(
         controller: _textEditPeso,
-        // focusNode: _crearApellido,
         keyboardType: TextInputType.numberWithOptions(),
         textInputAction: TextInputAction.next,
         validator: _validateEmpty,
@@ -260,13 +330,12 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
         },
         decoration: InputDecoration(
             labelText: 'Peso (Libras)',
-            //prefixIcon: Icon(Icons.email),
             icon: Icon(Icons.shopping_bag_outlined)),
       ),
     ); //text field: email
   }
 
-  Widget _crearDestino() {
+  /*Widget _crearDestino() {
     return Container(
       padding: EdgeInsets.only(left: 15, right: 15, top: 5),
       color: Colors.white,
@@ -304,9 +373,9 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
         ],
       ),
     );
-  }
+  }*/
 
-  Widget _botonGuardar() {
+  Widget _botonCalcular() {
     return Container(
       margin: EdgeInsets.only(top: 32.0),
       width: double.infinity,
@@ -316,7 +385,7 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
         elevation: 5.0,
         padding: EdgeInsets.only(top: 16.0, bottom: 16.0),
         child: Text(
-          'COTIZAR',
+          'CALCULAR',
           style: TextStyle(fontSize: 16.0),
         ),
         onPressed: () {
@@ -379,8 +448,7 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
 
   Future<String> _onTappedButtonCotizar() async {
     var url = 'https://webyte.com.gt/projects/apps/fastmail/executequerys.php';
-    if (_myState.toString() != null &&
-        _textEditValor.text.toString() != null &&
+    if (_textEditValor.text.toString() != null &&
         _textEditPeso.text.toString() != null &&
         _destinovalue.toString() != null) {
       final response = await http.post(url, headers: <String, String>{
@@ -388,7 +456,7 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
       }, body: {
         "identificador": "COTIZAR",
         "codpais": "502",
-        "codarticulo": _myState.toString(),
+        //"codarticulo": _myState.toString(),
         "articulo": _namearticulo.toString(),
         "valor": _textEditValor.text.toString(),
         "peso": _textEditPeso.text.toString(),
@@ -420,11 +488,11 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
             _showdetailprice = false;
           }
 
-          if (_fleteInterior != "0.00") {
+          /*if (_fleteInterior != "0.00") {
             _fleteinterior = true;
           } else {
             _fleteinterior = false;
-          }
+          }*/
         });
       } else {
         //_showdetailprice = false;
@@ -432,7 +500,7 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
     }
   }
 
-  Widget getWidgetPriceCard() {
+  /*Widget getWidgetPriceCard() {
     return _showdetailprice == true
         ? Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16.0),
@@ -646,5 +714,5 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
             ),
           )
         : new Container();
-  }
+  }*/
 }
