@@ -1,4 +1,5 @@
 import 'package:fastmail_flutter/src/bloc/mybullet.dart';
+import 'package:fastmail_flutter/src/config/api.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -188,7 +189,8 @@ class __CotizadorPageState extends State<CotizadorPage> {
   String _myState;
 
   Future<String> loadarticulos() async {
-    var url = 'https://webyte.com.gt/projects/apps/fastmail/executequerys.php';
+    var url = Api.baseUrl + Api.queryselects;
+    //'https://webyte.com.gt/projects/apps/fastmail/executequerys.php';
 
     if (_myState == null) {
       final response = await http.post(url,
@@ -369,16 +371,9 @@ class __CotizadorPageState extends State<CotizadorPage> {
     }
   }
 
-  String _validatePassword(String value) {
-    return value.length < 5 ? 'Min 5 char required' : null;
-  }
-
-  String _validateConfirmPassword(String value) {
-    return value.length < 5 ? 'Min 5 char required' : null;
-  }
-
   Future<String> _onTappedButtonCotizar() async {
-    var url = 'https://webyte.com.gt/projects/apps/fastmail/executequerys.php';
+    var url = Api.baseUrl + Api.cotizador_pobox;
+    //'https://webyte.com.gt/projects/apps/fastmail/executequerys.php';
     if (_myState.toString() != null &&
         _textEditValor.text.toString() != null &&
         _textEditPeso.text.toString() != null &&
@@ -386,17 +381,26 @@ class __CotizadorPageState extends State<CotizadorPage> {
       final response = await http.post(url, headers: <String, String>{
         "Accept": "application/json"
       }, body: {
-        "identificador": "COTIZAR",
         "codpais": "502",
         "codarticulo": _myState.toString(),
         "articulo": _namearticulo.toString(),
         "valor": _textEditValor.text.toString(),
         "peso": _textEditPeso.text.toString(),
         "destino": _destinovalue,
-        "tipocliente": "Fastmail"
+        "tipocliente": "Fastmail" //debemos asignar la variable segun el cliente
       });
-      //print(response.statusCode);
       if (response.statusCode == 200) {
+        print("prueba envío" +
+            " " +
+            _myState.toString() +
+            " " +
+            _namearticulo.toString() +
+            " " +
+            _textEditValor.text.toString() +
+            " " +
+            _textEditPeso.text.toString() +
+            " " +
+            _destinovalue);
         //print('resultValidLogin Response: ${response.body}');
         dynamic data1 = jsonDecode(response.body);
         print(data1.toString());
