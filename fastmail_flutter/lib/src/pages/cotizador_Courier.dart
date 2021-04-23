@@ -1,4 +1,5 @@
-import 'package:fastmail_flutter/src/bloc/mybullet.dart';
+//import 'package:fastmail_flutter/src/bloc/mybullet.dart';
+import 'package:fastmail_flutter/src/config/api.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -24,7 +25,7 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
   String _namearticulo;
   bool _showdetailprice = false;
   String _destinovalue;
-  String _subtotal = "";
+  /*String _subtotal = "";
   String _total = "";
   String _totalquetzales = "";
   String _fleteInterior = "";
@@ -33,7 +34,7 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
   String _manejo = "";
   String _seguro = "";
   String _almacenaje = "";
-  String _polizamayor = "";
+  String _polizamayor = "";*/
   @override
   void initState() {
     isPasswordVisible = false;
@@ -399,7 +400,7 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
     );
   }
 
-  Widget _botonEnviarEmail() {
+  /*Widget _botonEnviarEmail() {
     return Container(
       margin: EdgeInsets.only(top: 32.0),
       width: double.infinity,
@@ -421,13 +422,13 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
       ),
     );
-  }
+  }*/
 
   String _validateEmpty(String value) {
     return value != null ? "Campo obligatorio" : null;
   }
 
-  String _validateEmail(String value) {
+  /*String _validateEmail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
@@ -436,18 +437,10 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
     } else {
       return null;
     }
-  }
-
-  String _validatePassword(String value) {
-    return value.length < 5 ? 'Min 5 char required' : null;
-  }
-
-  String _validateConfirmPassword(String value) {
-    return value.length < 5 ? 'Min 5 char required' : null;
-  }
+  }*/
 
   Future<String> _onTappedButtonCotizar() async {
-    var url = 'https://webyte.com.gt/projects/apps/fastmail/executequerys.php';
+    var url = Api.baseUrl + Api.queryselects;
     if (_textEditValor.text.toString() != null &&
         _textEditPeso.text.toString() != null &&
         _destinovalue.toString() != null) {
@@ -469,7 +462,7 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
         dynamic data1 = jsonDecode(response.body);
         print(data1.toString());
         print(data1['subtotal'].toString());
-        _subtotal = data1['subtotal'].toString();
+        /*_subtotal = data1['subtotal'].toString();
         _total = data1['total'].toString();
         _totalquetzales = data1['totalquetzales'].toString();
         _fleteInterior = data1['fleteInterior'].toString();
@@ -478,7 +471,7 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
         _manejo = data1['manejo'].toString();
         _seguro = data1['seguro'].toString();
         _almacenaje = data1['almacenaje'].toString();
-        _polizamayor = data1['polizamayor'].toString();
+        _polizamayor = data1['polizamayor'].toString();*/
         //_showdetailprice = true;
         print(_showdetailprice);
         setState(() {
@@ -497,6 +490,7 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
       } else {
         //_showdetailprice = false;
       }
+      return null;
     }
   }
 

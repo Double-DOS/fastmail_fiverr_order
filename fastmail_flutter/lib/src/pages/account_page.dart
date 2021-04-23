@@ -202,7 +202,7 @@ class __AccountPageState extends State<AccountPage> {
     );
   }
 
-  Widget _account(BuildContext context) {
+  /*Widget _account(BuildContext context) {
     final bloc = Provider.of(context);
     final size = MediaQuery.of(context).size;
     return SingleChildScrollView(
@@ -237,7 +237,7 @@ class __AccountPageState extends State<AccountPage> {
         ],
       ),
     );
-  }
+  }*/
 
   Widget _dirmiami() {
     final circulo = Container(
@@ -570,5 +570,6 @@ class __AccountPageState extends State<AccountPage> {
     } else {
       //_showdetailprice = false;
     }
+    return null;
   }
 }

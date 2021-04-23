@@ -189,7 +189,7 @@ class __MiniCargaPageState extends State<MiniCargaPage> {
     return value != null ? "Campo obligatorio" : null;
   }
 
-  String _validateEmail(String value) {
+  /*String _validateEmail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
@@ -198,13 +198,6 @@ class __MiniCargaPageState extends State<MiniCargaPage> {
     } else {
       return null;
     }
-  }
+  }*/
 
-  String _validatePassword(String value) {
-    return value.length < 5 ? 'Min 5 char required' : null;
-  }
-
-  String _validateConfirmPassword(String value) {
-    return value.length < 5 ? 'Min 5 char required' : null;
-  }
 }

@@ -20,7 +20,7 @@ class __PideloEnLineaPageState extends State<PideloEnLineaPage> {
   String _namearticulo;
   bool _showdetailprice = false;
   bool _fleteinterior = false;
-  String _destinovalue;
+  String _destinovalue = "";
   String _subtotal = "";
   String _total = "";
   String _totalquetzales = "";
@@ -390,14 +390,6 @@ class __PideloEnLineaPageState extends State<PideloEnLineaPage> {
     } else {
       return null;
     }
-  }
-
-  String _validatePassword(String value) {
-    return value.length < 5 ? 'Min 5 char required' : null;
-  }
-
-  String _validateConfirmPassword(String value) {
-    return value.length < 5 ? 'Min 5 char required' : null;
   }
 
   Future<String> _onTappedButtonCotizar() async {

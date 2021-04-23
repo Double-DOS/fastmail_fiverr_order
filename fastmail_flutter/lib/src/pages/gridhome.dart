@@ -2,6 +2,7 @@ import 'package:fastmail_flutter/src/bloc/hyperlink.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:carousel_pro/carousel_pro.dart';
 
 class GridHomePage extends StatefulWidget {
   @override
@@ -26,7 +27,8 @@ class _GridHomePageState extends State<GridHomePage> {
     height: 100.0,
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100.0),
-        color: Color.fromRGBO(255, 255, 255, 0.05)),
+        //color: Color.fromRGBO(255, 255, 255, 0.05)),
+        color: Color.fromRGBO(29, 62, 97, 1)),
   );
 
   @override
@@ -35,11 +37,11 @@ class _GridHomePageState extends State<GridHomePage> {
         ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      //backgroundColor: Colors.white,
+      backgroundColor: Color.fromRGBO(29, 62, 97, 1),
       appBar: AppBar(
         // toolbarHeight: 150, // Set this height
-
-        backgroundColor: Colors.blue[900],
+        backgroundColor: Color.fromRGBO(21, 41, 66, 1),
         elevation: 0,
         //leading: Icon(Icons.menu),
         title: Text("Inicio"),
@@ -91,7 +93,7 @@ class _GridHomePageState extends State<GridHomePage> {
                     bottomRight: Radius.circular(40),
                     bottomLeft: Radius.circular(40),
                   ),
-                  color: Colors.blue[900],
+                  color: Color.fromRGBO(21, 41, 66, 1),
                 ),
               ),
             ),
@@ -102,10 +104,13 @@ class _GridHomePageState extends State<GridHomePage> {
               padding: EdgeInsets.all(20.0),
               child: Column(
                 children: <Widget>[
+                  //_image_carousel(),
                   //circulo,
-                  Stack(
+
+                  /*Stack(
                     children: <Widget>[
-                      Container(
+                      
+                      /*Container(
                         width: double.infinity,
                         height: 235,
                         decoration: BoxDecoration(
@@ -124,9 +129,9 @@ class _GridHomePageState extends State<GridHomePage> {
                                     Colors.black.withOpacity(.2),
                                   ])),
                         ),
-                      ),
+                      ),*/
                     ],
-                  ),
+                  ),*/
                   SizedBox(
                     height: 75,
                   ),
@@ -156,6 +161,9 @@ class _GridHomePageState extends State<GridHomePage> {
                               onTap: () async {
                                 if (item == "./assets/images/Cotizador.png") {
                                   Navigator.pushNamed(context, 'cotizador');
+                                } else if (item ==
+                                    "./assets/images/Tracking.png") {
+                                  Navigator.pushNamed(context, 'listpackages');
                                 } else if (item ==
                                     "./assets/images/Cuenta.png") {
                                   Navigator.pushNamed(context, 'account');
@@ -200,7 +208,27 @@ class _GridHomePageState extends State<GridHomePage> {
     );
   }
 
-  void _onTappedCard(BuildContext context, String item) {
+  Widget _image_carousel() {
+    return Container(
+      height: 200,
+      child: new Carousel(
+        boxFit: BoxFit.fill,
+        //borderRadius: BorderRadiusDirectional.all(20),
+        images: [
+          //AssetImage('assets/images/homecustomwall/slide1fm.png'),
+          AssetImage('assets/images/homecustomwall/slide2fm.jpg'),
+          //AssetImage('assets/images/homecustomwall/slide3fm.jpg'),
+        ],
+        autoplay: true,
+        animationCurve: Curves.fastOutSlowIn,
+        animationDuration: Duration(milliseconds: 1000),
+        dotSize: 4.0,
+        indicatorBgPadding: 4.0,
+      ),
+    );
+  }
+
+  /* void _onTappedCard(BuildContext context, String item) {
     print(item.contains("Cotizador"));
     if (item == "./assets/images/Cotizador.png") {
       Navigator.pushNamed(context, 'cotizador');
@@ -210,5 +238,5 @@ class _GridHomePageState extends State<GridHomePage> {
       Hyperlink('https://guimgonzalez.business/', 'Awesome website!');
     } else if (item == "./assets/images/Whatsapp.png") {
     } else if (item == "./assets/images/Facebook.png") {}
-  }
+  }*/
 }

@@ -52,7 +52,7 @@ class __CotizadorPageState extends State<CotizadorPage> {
         backgroundColor: Colors.blue[900],
         elevation: 0,
         //leading: Icon(Icons.menu),
-        title: Text("Cotizador"),
+        title: Text("Cotizador P.O. Box"),
       ),
       body: SingleChildScrollView(
         child: Padding(

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class ModelLogin {
   final int pais;
   final int codigo;

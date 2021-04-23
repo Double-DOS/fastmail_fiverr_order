@@ -207,6 +207,7 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
         //throw Exception('Failed to get data');
       }
     }
+    return null;
   }
 
   Widget _crearEmail() {
@@ -367,14 +368,6 @@ class __CTMiniCargaPageState extends State<CTMiniCargaPage> {
     } else {
       return null;
     }
-  }
-
-  String _validatePassword(String value) {
-    return value.length < 5 ? 'Min 5 char required' : null;
-  }
-
-  String _validateConfirmPassword(String value) {
-    return value.length < 5 ? 'Min 5 char required' : null;
   }
 
   Future<String> _onTappedButtonCotizar() async {

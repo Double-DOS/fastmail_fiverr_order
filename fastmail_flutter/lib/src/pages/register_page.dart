@@ -128,6 +128,7 @@ Future<String> loginn(
       } else if (data1['tipousuario'] == 'ADMIN') {}
     }
   } else {}
+  return null;
 }
 
 showMessage(BuildContext context, String _dtittle, String _dmsg) {
@@ -381,6 +382,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         });
       }
     }
+    return null;
   }
 
   Widget _crearDireccion() {
@@ -681,15 +683,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (data1['cant'] == '500') {
       } else {}
     } else {}
+    return null;
   }
 
-  String _validatePassword(String value) {
+  /*String _validatePassword(String value) {
     return value.length < 6 ? 'Min 6 char required' : null;
   }
 
   String _validateConfirmPassword(String value) {
     return value.length < 5 ? 'Min 5 char required' : null;
-  }
+  }*/
 
   void _onTappedTextlogin() {
     Navigator.pushReplacementNamed(context, 'login');
