@@ -487,17 +487,19 @@ class __AccountPageState extends State<AccountPage> {
     final response2 = await http.post(url2, headers: <String, String>{
       "Accept": "application/json"
     }, body: {
-      "identificador": "VALIDEMAIL",
+      "identificador": "VALIDEMAIL_UPDATEINFO",
       "codpais": "502",
+      "codigofm": _codigofastmail,
       "email": email,
     });
     print(response2.statusCode);
     if (response2.statusCode == 200) {
       print('_verifyEmailOnFastmail Response: ${response2.body}');
       dynamic data2 = jsonDecode(response2.body);
-      if (data2['Cant'] == '500') {
-      } else {
+      if (int.parse(data2[0]['cantt']) == 0) {
         validEmail = false;
+      } else {
+        validEmail = true;
       }
     }
 
@@ -505,25 +507,39 @@ class __AccountPageState extends State<AccountPage> {
     final response3 = await http.post(url3, headers: <String, String>{
       "Accept": "application/json"
     }, body: {
-      "identificador": "VALIDCELULAR",
+      "identificador": "VALIDCELULAR_UPDATEINFO",
       "codpais": "502",
+      "codigofm": _codigofastmail,
       "celular": celular,
     });
     print(response3.statusCode);
     if (response3.statusCode == 200) {
       print('_verifyCelularOnFastmail Response: ${response3.body}');
       dynamic data3 = jsonDecode(response3.body);
-      if (data3['Cant'] == '500') {
-      } else {
+      if (int.parse(data3[0]['cantt']) == 0) {
         validCelular = false;
+      } else {
+        validCelular = true;
       }
     }
 
-    if ((validEmail != false) && (validCelular != false)) {
+    if ((validEmail == true) || (validCelular == true)) {
+      if (validEmail == true) {
+        showMessage(context, "Advertencia",
+            "¡Error, ya existe una cuenta registrada con el email Ingresado!");
+      }
+      if (validCelular == true) {
+        showMessage(context, "Advertencia",
+            "¡Error, ya existe una cuenta registrada con ese numero de celular!");
+      }
+    }
+
+    if ((validEmail == false) && (validCelular == false)) {
       var url = Api.baseUrl + Api.updatequerys;
       final response = await http.post(url, headers: <String, String>{
         "Accept": "application/json"
       }, body: {
+        "identificador": "UPDATECLIENTE",
         "codpais": "502",
         "codigo": _codigofastmail,
         "nombres": nombres,
@@ -544,6 +560,31 @@ class __AccountPageState extends State<AccountPage> {
         } else {}
       } else {}
     }
+  }
+
+  showMessage(BuildContext context, String _dtittle, String _dmsg) {
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(_dtittle),
+      content: Text(_dmsg),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 
   Future<String> _getInfoCliente() async {

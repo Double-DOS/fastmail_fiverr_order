@@ -667,7 +667,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
   }
 
-  Future<String> _verifyEmailOnFastmailBD(String email) async {
+  /*Future<String> _verifyEmailOnFastmailBD(String email) async {
     var url = Api.baseUrl + Api.queryselects;
     final response = await http.post(url, headers: <String, String>{
       "Accept": "application/json"
@@ -684,15 +684,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
       } else {}
     } else {}
     return null;
-  }
+  }*/
 
-  /*String _validatePassword(String value) {
+  String _validatePassword(String value) {
     return value.length < 6 ? 'Min 6 char required' : null;
   }
 
   String _validateConfirmPassword(String value) {
     return value.length < 5 ? 'Min 5 char required' : null;
-  }*/
+  }
 
   void _onTappedTextlogin() {
     Navigator.pushReplacementNamed(context, 'login');
