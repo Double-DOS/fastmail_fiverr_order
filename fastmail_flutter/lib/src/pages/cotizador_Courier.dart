@@ -16,6 +16,10 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
   TextEditingController _textEditPeso = TextEditingController();
   TextEditingController _textEditConEmail = TextEditingController();
 
+  TextEditingController _textEditAlto = TextEditingController();
+  TextEditingController _textEditAncho = TextEditingController();
+  TextEditingController _textEditLargo = TextEditingController();
+
   String _tipoDP;
   String _envioUrgNormal;
   String _destinoEnvio;
@@ -134,7 +138,6 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
                 _crearDestinoEnvio(),
                 //_crearValor(),
                 _crearPeso(),
-
                 _crearMedidas(),
                 //getDestino(),
                 _botonCalcular()
@@ -147,11 +150,70 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
   }
 
   Widget _crearMedidas() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
       children: [
-        _crearAltura(),
-        _crearAncho(),
+        Center(
+          child: Container(
+            child: new Row(
+              children: [
+                new Expanded(
+                  child: new Container(
+                    child: TextFormField(
+                      controller: _textEditAlto,
+                      keyboardType: TextInputType.numberWithOptions(),
+                      textInputAction: TextInputAction.next,
+                      validator: _validateEmpty,
+                      onFieldSubmitted: (String value) {
+                        //  FocusScope.of(context).requestFocus(_passwordFocus);
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Alto (cm)',
+                        // icon: Icon(Icons.shopping_bag_outlined)
+                      ),
+                    ),
+                  ),
+                  flex: 6,
+                ),
+                new Expanded(
+                  child: new Container(
+                    child: TextFormField(
+                      controller: _textEditAncho,
+                      keyboardType: TextInputType.numberWithOptions(),
+                      textInputAction: TextInputAction.next,
+                      validator: _validateEmpty,
+                      onFieldSubmitted: (String value) {
+                        //  FocusScope.of(context).requestFocus(_passwordFocus);
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Ancho (cm)',
+                        // icon: Icon(Icons.shopping_bag_outlined)
+                      ),
+                    ),
+                  ),
+                  flex: 6,
+                ),
+                new Expanded(
+                  child: new Container(
+                    child: TextFormField(
+                      controller: _textEditLargo,
+                      keyboardType: TextInputType.numberWithOptions(),
+                      textInputAction: TextInputAction.next,
+                      validator: _validateEmpty,
+                      onFieldSubmitted: (String value) {
+                        //  FocusScope.of(context).requestFocus(_passwordFocus);
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Largo (cm)',
+                        //icon: Icon(Icons.shopping_bag_outlined)
+                      ),
+                    ),
+                  ),
+                  flex: 6,
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }
