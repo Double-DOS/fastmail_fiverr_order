@@ -145,7 +145,9 @@ class __PideloEnLineaPageState extends State<PideloEnLineaPage> {
           color: Colors.white, // button color
           child: InkWell(
             splashColor: Colors.blue, // splash color
-            onTap: () {}, // button pressed
+            onTap: () {
+              Navigator.pushNamed(context, 'cotienlinea');
+            }, // button pressed
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
