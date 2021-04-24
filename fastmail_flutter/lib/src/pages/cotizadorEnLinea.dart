@@ -4,12 +4,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 
-class PideloEnLineaPage extends StatefulWidget {
+class CotizadorPideloEnLineaPage extends StatefulWidget {
   @override
-  __PideloEnLineaPageState createState() => __PideloEnLineaPageState();
+  __CotizadorPideloEnLineaPageState createState() =>
+      __CotizadorPideloEnLineaPageState();
 }
 
-class __PideloEnLineaPageState extends State<PideloEnLineaPage> {
+class __CotizadorPideloEnLineaPageState
+    extends State<CotizadorPideloEnLineaPage> {
   static var _keyValidationForm = GlobalKey<FormState>();
   TextEditingController _textEditValor = TextEditingController();
   TextEditingController _textEditPeso = TextEditingController();
@@ -57,14 +59,9 @@ class __PideloEnLineaPageState extends State<PideloEnLineaPage> {
             child: Column(
               children: <Widget>[
                 getWidgetImageLogo(),
-                SizedBox(height: 50.0),
-                _crearBoton1(),
-                SizedBox(height: 15.0),
-                _crearBoton2(),
-                SizedBox(height: 15.0),
-                _crearBoton3(),
-                // getWidgetRegistrationCard(),
-                // getWidgetPriceCard(),
+                SizedBox(height: 20.0),
+                getWidgetRegistrationCard(),
+                getWidgetPriceCard(),
               ],
             )),
       ),
@@ -85,164 +82,11 @@ class __PideloEnLineaPageState extends State<PideloEnLineaPage> {
             width: double.infinity,
           ),
           Text(
-            'By FastMail Center',
+            'Envíanos tus datos en este formulario con el detalle del producto que deseaas comprar.',
             style: TextStyle(color: Colors.white, fontSize: 10.0),
           )
         ],
       ),
-    );
-  }
-
-  Widget _crearBoton1() {
-    return SizedBox.fromSize(
-      size: Size(125, 125), // button width and height
-      child: ClipOval(
-        child: Material(
-          color: Colors.white, // button color
-          child: InkWell(
-            splashColor: Colors.blue, // splash color
-            onTap: () {}, // button pressed
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(Icons.question_answer_outlined), // icon
-                Text("Cómo comprar?"), // text
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _crearBoton2() {
-    return SizedBox.fromSize(
-      size: Size(125, 125), // button width and height
-      child: ClipOval(
-        child: Material(
-          color: Colors.white, // button color
-          child: InkWell(
-            splashColor: Colors.blue, // splash color
-            onTap: () {}, // button pressed
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(Icons.attach_money_sharp), // icon
-                Text("Formas de Pago"), // text
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _crearBoton3() {
-    return SizedBox.fromSize(
-      size: Size(125, 125), // button width and height
-      child: ClipOval(
-        child: Material(
-          color: Colors.white, // button color
-          child: InkWell(
-            splashColor: Colors.blue, // splash color
-            onTap: () {}, // button pressed
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(Icons.add_shopping_cart_rounded), // icon
-                Text("Haz tu Pedido"), // text
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _crearMedidas() {
-    return Column(
-      children: [
-        Center(
-          child: Container(
-            child: new Row(
-              children: [
-                new Expanded(
-                  child: new Container(
-                    child: SizedBox.fromSize(
-                      size: Size(56, 56), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Colors.orange, // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {}, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(Icons.call), // icon
-                                Text("Call"), // text
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  flex: 10,
-                ),
-                new Expanded(
-                  child: new Container(
-                    child: SizedBox.fromSize(
-                      size: Size(56, 56), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Colors.orange, // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {}, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(Icons.call), // icon
-                                Text("Call"), // text
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  flex: 10,
-                ),
-                new Expanded(
-                  child: new Container(
-                    child: SizedBox.fromSize(
-                      size: Size(125, 125), // button width and height
-                      child: ClipOval(
-                        child: Material(
-                          color: Colors.transparent, // button color
-                          child: InkWell(
-                            splashColor: Colors.green, // splash color
-                            onTap: () {}, // button pressed
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(Icons.call), // icon
-                                Text("Call"), // text
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  flex: 6,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 
