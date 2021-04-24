@@ -1,9 +1,9 @@
 class MdlPackList {
-  String tracking;
-  String descpaquete;
-  String estadoPack;
-  String origenPack;
-  String fechaUpdStatePack;
+  final String tracking;
+  final String descpaquete;
+  final String estadoPack;
+  final String origenPack;
+  final String fechaUpdStatePack;
 
   MdlPackList(
       {this.tracking,
@@ -12,14 +12,14 @@ class MdlPackList {
       this.origenPack,
       this.fechaUpdStatePack});
 
-  factory MdlPackList.fromJson(Map<String, dynamic> json) {
+  factory MdlPackList.fromJson(Map<String, dynamic> jsonData) {
     return MdlPackList(
       //codmcliente: json['idCliente'] as String,
-      tracking: json['Tracking'] as String,
-      descpaquete: json['Articulo'] as String,
-      estadoPack: json['Descripstate'] as String,
-      origenPack: json['origenn'] as String,
-      fechaUpdStatePack: json['fechaup'] as String,
+      tracking: jsonData['Tracking'],
+      descpaquete: jsonData['Articulo'],
+      estadoPack: jsonData['Descripstate'],
+      origenPack: jsonData['origenn'],
+      fechaUpdStatePack: jsonData['fechaup'],
     );
   }
 }

@@ -47,7 +47,7 @@ class __PackagelistPageState extends State<PackagelistPage> {
       });
       print('getEmployees Response: ${response.body}');
       if (200 == response.statusCode) {
-        List<MdlPackList> list = parseResponse(response.body);
+        List<MdlPackList> list = json.decode(response.body);
         return list;
       } else {
         return List<MdlPackList>();
@@ -57,21 +57,21 @@ class __PackagelistPageState extends State<PackagelistPage> {
     }
   }
 
-  static List<MdlPackList> parseResponse(String responseBody) {
+  /*static List<MdlPackList> jsonDecode(String responseBody) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
     return parsed
         .map<MdlPackList>((json) => MdlPackList.fromJson(json))
         .toList();
-  }
+  }*/
 
   _getListPackages() {
     _showProgress('Cargando Paquetes...');
-    getPackages().then((employees) {
+    getPackages().then((paquetess) {
       setState(() {
-        _packagess = employees;
+        _packagess = paquetess;
       });
       _showProgress(widget.title); // Reset the title...
-      print("Length ${employees.length}");
+      print("Length ${paquetess}");
     });
   }
 
@@ -85,7 +85,7 @@ class __PackagelistPageState extends State<PackagelistPage> {
         backgroundColor: Color.fromRGBO(29, 62, 97, 1),
         elevation: 0,
         //leading: Icon(Icons.menu),
-        title: Text("Listado Paquetes"),
+        title: Text("Listado de Paquetes"),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -113,36 +113,73 @@ class __PackagelistPageState extends State<PackagelistPage> {
             DataColumn(
               label: Text(
                 'TRACKING',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.lightBlue,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
             ),
             DataColumn(
               label: Text(
                 'PAQUETE',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.lightBlue,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
             ),
             DataColumn(
               label: Text(
                 'ESTADO',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.lightBlue,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
             ),
             // Lets add one more column to show a delete button
             DataColumn(
               label: Text(
                 'ORIGEN',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.lightBlue,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
             ),
             DataColumn(
               label: Text(
                 'FECHA',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.lightBlue,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
             )
           ],
-          rows: _packagess
+          rows: const <DataRow>[
+            DataRow(
+              /*color: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                return Colors.white;
+              }),*/
+              cells: <DataCell>[
+                DataCell(
+                  Text('2689429'),
+                ),
+                DataCell(Text('BODY WASH  AND CREAM')),
+                DataCell(Text('En transito a GUA')),
+                DataCell(Text('JEFF')),
+                DataCell(Text('2021-02-03 11:44:16')),
+              ],
+            ),
+          ],
+          /*_packagess
               .map(
                 (paquetesmdl) => DataRow(cells: [
                   DataCell(
@@ -217,7 +254,7 @@ class __PackagelistPageState extends State<PackagelistPage> {
                   ))
                 ]),
               )
-              .toList(),
+              .toList(),*/
         ),
       ),
     );
