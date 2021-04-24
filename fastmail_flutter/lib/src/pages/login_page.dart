@@ -251,7 +251,8 @@ class _LoginPageState extends State<LoginPage> {
       height: size.height,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.blue[900],
+        //color: Colors.blue[900],
+        color: Color.fromRGBO(29, 62, 97, 1),
         //  gradient: LinearGradient(colors: <Color>[
         //  Color.fromRGBO(34, 113, 179, 1.0),
         //  Color.fromRGBO(0, 170, 228, 1.0)
