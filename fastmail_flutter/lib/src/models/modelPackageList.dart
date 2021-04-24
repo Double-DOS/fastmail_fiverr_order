@@ -15,11 +15,11 @@ class MdlPackList {
   factory MdlPackList.fromJson(Map<String, dynamic> json) {
     return MdlPackList(
       //codmcliente: json['idCliente'] as String,
-      tracking: json[0]['Tracking'] as String,
-      descpaquete: json[0]['Articulo'] as String,
-      estadoPack: json[0]['Descripstate'] as String,
-      origenPack: json[0]['origenn'] as String,
-      fechaUpdStatePack: json[0]['fechaup'] as String,
+      tracking: json['Tracking'] as String,
+      descpaquete: json['Articulo'] as String,
+      estadoPack: json['Descripstate'] as String,
+      origenPack: json['origenn'] as String,
+      fechaUpdStatePack: json['fechaup'] as String,
     );
   }
 }

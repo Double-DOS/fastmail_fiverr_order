@@ -213,7 +213,10 @@ class _GridHomePageState extends State<GridHomePage> {
       height: 200,
       child: new Carousel(
         boxFit: BoxFit.fill,
-        //borderRadius: BorderRadiusDirectional.all(20),
+
+        borderRadius: true,
+
+        ///borderRadius: BorderRadiusDirectional.all(20),
         images: [
           AssetImage('assets/images/homecustomwall/slide1fm.png'),
           AssetImage('assets/images/homecustomwall/slide2fm.JPG'),
