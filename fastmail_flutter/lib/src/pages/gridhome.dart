@@ -12,6 +12,7 @@ class GridHomePage extends StatefulWidget {
 class _GridHomePageState extends State<GridHomePage> {
   final List<String> _listItem = [
     './assets/images/Cotizador.png',
+    './assets/images/CotizadorCR.png',
     './assets/images/Tracking.png',
     './assets/images/Cuenta.png',
     './assets/images/MiniCarga.png',
@@ -51,7 +52,7 @@ class _GridHomePageState extends State<GridHomePage> {
           padding: const EdgeInsets.all(0.0),
           children: <Widget>[
             new UserAccountsDrawerHeader(
-              // backgroundColor:Colors.blue,
+              //backgroundColor:Colors.blue,
               accountName: new Text(rcvdData['name']),
               accountEmail: new Text(rcvdData['email']),
               // currentAccountPicture: new CircleAvatar(
@@ -133,7 +134,7 @@ class _GridHomePageState extends State<GridHomePage> {
                     ],
                   ),*/
                   SizedBox(
-                    height: 75,
+                    height: 100,
                   ),
                   Expanded(
                       child: GridView.count(
@@ -161,6 +162,9 @@ class _GridHomePageState extends State<GridHomePage> {
                               onTap: () async {
                                 if (item == "./assets/images/Cotizador.png") {
                                   Navigator.pushNamed(context, 'cotizador');
+                                } else if (item ==
+                                    "./assets/images/CotizadorCR.png") {
+                                  Navigator.pushNamed(context, 'cotizadorCR');
                                 } else if (item ==
                                     "./assets/images/Tracking.png") {
                                   Navigator.pushNamed(context, 'listpackages');

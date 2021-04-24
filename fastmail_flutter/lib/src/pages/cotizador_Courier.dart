@@ -16,15 +16,17 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
   TextEditingController _textEditPeso = TextEditingController();
   TextEditingController _textEditConEmail = TextEditingController();
 
-  String _tipoDP = '';
-  String _envioUrgNormal = '';
-  String _destinoEnvio = '';
+  String _tipoDP;
+  String _envioUrgNormal;
+  String _destinoEnvio;
 
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
   String _namearticulo;
   bool _showdetailprice = false;
   String _destinovalue;
+  String _destinovalue2;
+  String _destinovalue3;
   /*String _subtotal = "";
   String _total = "";
   String _totalquetzales = "";
@@ -132,8 +134,8 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
                 _crearDestinoEnvio(),
                 //_crearValor(),
                 _crearPeso(),
-                //_crearDestino(),
 
+                _crearMedidas(),
                 //getDestino(),
                 _botonCalcular()
               ],
@@ -144,8 +146,17 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
     );
   }
 
+  Widget _crearMedidas() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _crearAltura(),
+        _crearAncho(),
+      ],
+    );
+  }
+
   Widget _crearTipo() {
-    //INICIO LISTA DESPLEGABLE
     return Container(
       padding: EdgeInsets.only(left: 15, right: 15, top: 5),
       color: Colors.white,
@@ -158,7 +169,7 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
                 alignedDropdown: true,
                 child: DropdownButton<String>(
                     isExpanded: true,
-                    value: _tipoDP,
+                    value: _destinovalue,
                     icon: const Icon(Icons.arrow_downward),
                     iconSize: 24,
                     style: TextStyle(
@@ -167,11 +178,8 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
                     ),
                     hint: Text('Seleccionar tipo'),
                     onChanged: (String newValue) {
-                      setState(() {
-                        _tipoDP = newValue;
-                        //loadarticulos();
-                        print(_tipoDP);
-                      });
+                      setState(() => _destinovalue = newValue);
+                      print(_destinovalue);
                     },
                     items: <String>['Documento', 'Paquete'].map((String value) {
                       return new DropdownMenuItem<String>(
@@ -185,7 +193,6 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
         ],
       ),
     );
-    //FIN LISTA DESPLEGABLE
   }
 
   Widget _crearEnvioNormalUrgente() {
@@ -202,7 +209,7 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
                 alignedDropdown: true,
                 child: DropdownButton<String>(
                     isExpanded: true,
-                    value: _envioUrgNormal,
+                    value: _destinovalue2,
                     icon: const Icon(Icons.arrow_downward),
                     iconSize: 24,
                     style: TextStyle(
@@ -211,10 +218,7 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
                     ),
                     hint: Text('Seleccionar tipo envío'),
                     onChanged: (String newValue) {
-                      setState(() {
-                        _envioUrgNormal = newValue;
-                        print(_envioUrgNormal);
-                      });
+                      setState(() => _destinovalue2 = newValue);
                     },
                     items: <String>['Normal', 'Urgente'].map((String value) {
                       return new DropdownMenuItem<String>(
@@ -245,7 +249,7 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
                 alignedDropdown: true,
                 child: DropdownButton<String>(
                     isExpanded: true,
-                    value: _destinoEnvio,
+                    value: _destinovalue3,
                     icon: const Icon(Icons.arrow_downward),
                     iconSize: 24,
                     style: TextStyle(
@@ -254,10 +258,7 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
                     ),
                     hint: Text('Seleccionar Destino'),
                     onChanged: (String newValue) {
-                      setState(() {
-                        _destinoEnvio = newValue;
-                        print(_destinoEnvio);
-                      });
+                      setState(() => _destinovalue3 = newValue);
                     },
                     items: <String>[
                       'Miami',
@@ -336,6 +337,39 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
     ); //text field: email
   }
 
+  Widget _crearAltura() {
+    return Container(
+      child: TextFormField(
+        controller: _textEditPeso,
+        keyboardType: TextInputType.numberWithOptions(),
+        textInputAction: TextInputAction.next,
+        validator: _validateEmpty,
+        onFieldSubmitted: (String value) {
+          //  FocusScope.of(context).requestFocus(_passwordFocus);
+        },
+        decoration: InputDecoration(
+          labelText: 'Alto',
+        ),
+      ),
+    ); //text field: email
+  }
+
+  Widget _crearAncho() {
+    return Container(
+      child: TextFormField(
+        controller: _textEditPeso,
+        keyboardType: TextInputType.numberWithOptions(),
+        textInputAction: TextInputAction.next,
+        validator: _validateEmpty,
+        onFieldSubmitted: (String value) {
+          //  FocusScope.of(context).requestFocus(_passwordFocus);
+        },
+        decoration: InputDecoration(
+          labelText: 'Ancho',
+        ),
+      ),
+    ); //text field: email
+  }
   /*Widget _crearDestino() {
     return Container(
       padding: EdgeInsets.only(left: 15, right: 15, top: 5),

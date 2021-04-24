@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
           'homegrid': (BuildContext context) => GridHomePage(),
           'register': (BuildContext context) => RegisterScreen(),
           'cotizador': (BuildContext context) => CotizadorPage(),
+          'cotizadorCR': (BuildContext context) => CotizadorCourierPage(),
           'account': (BuildContext context) => AccountPage(),
           'minicarga': (BuildContext context) => MiniCargaPage(),
           'ctminicarga': (BuildContext context) => CTMiniCargaPage(),

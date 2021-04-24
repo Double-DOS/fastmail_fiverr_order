@@ -34,6 +34,7 @@ class __CotizadorPageState extends State<CotizadorPage> {
   String _seguro = "";
   String _almacenaje = "";
   String _polizamayor = "";
+  String _nombrearticulo = "";
   @override
   void initState() {
     isPasswordVisible = false;
@@ -386,7 +387,6 @@ class __CotizadorPageState extends State<CotizadorPage> {
       }, body: {
         "codpais": "502",
         "codarticulo": _myState.toString(),
-        "articulo": _namearticulo.toString(),
         "valor": _textEditValor.text.toString(),
         "peso": _textEditPeso.text.toString(),
         "destino": _destinovalue,
@@ -419,6 +419,7 @@ class __CotizadorPageState extends State<CotizadorPage> {
         _almacenaje = data1['almacenaje'].toString();
         _polizamayor = data1['polizamayor'].toString();
         _noCotizacion = data1['idcotizacion'].toString();
+        _nombrearticulo = data1['articulo'].toString();
         //_showdetailprice = true;
         print(_showdetailprice);
         setState(() {
@@ -493,7 +494,9 @@ class __CotizadorPageState extends State<CotizadorPage> {
                             children: [
                               TableRow(children: [
                                 Text('Tipo de artículo:'),
-                                Text(_namearticulo != null ? _namearticulo : "")
+                                Text(_nombrearticulo != null
+                                    ? _nombrearticulo
+                                    : "")
                               ]),
                               TableRow(children: [
                                 Text('Valor:'),
