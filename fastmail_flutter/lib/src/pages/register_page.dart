@@ -204,7 +204,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[900],
+      //backgroundColor: Colors.blue[900],
+      backgroundColor: Color.fromRGBO(29, 62, 97, 1),
       body: SingleChildScrollView(
         child: Padding(
             padding: EdgeInsets.only(top: 32.0),

@@ -36,11 +36,11 @@ class __AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[900],
+      backgroundColor: Color.fromRGBO(29, 62, 97, 1),
       appBar: AppBar(
         // toolbarHeight: 150, // Set this height
 
-        backgroundColor: Colors.blue[900],
+        backgroundColor: Color.fromRGBO(29, 62, 97, 1),
         elevation: 0,
         //leading: Icon(Icons.menu),
         title: Text("Mi Cuenta"),
@@ -185,7 +185,8 @@ class __AccountPageState extends State<AccountPage> {
               'Actualizar Perfil',
               style: TextStyle(
                 fontSize: 19.0,
-                color: Colors.black,
+                color: Colors.blue,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ), // title: login

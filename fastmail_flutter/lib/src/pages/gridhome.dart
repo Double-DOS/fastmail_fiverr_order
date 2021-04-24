@@ -52,12 +52,18 @@ class _GridHomePageState extends State<GridHomePage> {
           padding: const EdgeInsets.all(0.0),
           children: <Widget>[
             new UserAccountsDrawerHeader(
-              //backgroundColor:Colors.blue,
+              decoration: BoxDecoration(color: Color.fromRGBO(29, 62, 97, 1)),
               accountName: new Text(rcvdData['name']),
               accountEmail: new Text(rcvdData['email']),
-              // currentAccountPicture: new CircleAvatar(
-              //   backgroundColor: Colors.red,
-              // )
+              currentAccountPicture: GestureDetector(
+                child: new CircleAvatar(
+                  backgroundColor: Colors.grey,
+                  child: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
             new ListTile(
               title: new Text('Perfil'),

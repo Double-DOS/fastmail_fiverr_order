@@ -78,11 +78,11 @@ class __PackagelistPageState extends State<PackagelistPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue[900],
+      backgroundColor: Color.fromRGBO(29, 62, 97, 1),
       appBar: AppBar(
         // toolbarHeight: 150, // Set this height
 
-        backgroundColor: Colors.blue[900],
+        backgroundColor: Color.fromRGBO(29, 62, 97, 1),
         elevation: 0,
         //leading: Icon(Icons.menu),
         title: Text("Listado Paquetes"),
