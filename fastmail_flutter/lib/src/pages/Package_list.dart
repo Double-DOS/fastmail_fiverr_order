@@ -170,12 +170,42 @@ class __PackagelistPageState extends State<PackagelistPage> {
               }),*/
               cells: <DataCell>[
                 DataCell(
-                  Text('2689429'),
+                  Text(
+                    '2689429',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                    ),
+                  ),
                 ),
-                DataCell(Text('BODY WASH  AND CREAM')),
-                DataCell(Text('En transito a GUA')),
-                DataCell(Text('JEFF')),
-                DataCell(Text('2021-02-03 11:44:16')),
+                DataCell(Text(
+                  'BODY WASH  AND CREAM',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                  ),
+                )),
+                DataCell(Text(
+                  'En transito a GUA',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                  ),
+                )),
+                DataCell(Text(
+                  'JEFF',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                  ),
+                )),
+                DataCell(Text(
+                  '2021-02-03 11:44:16',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                  ),
+                )),
               ],
             ),
           ],
