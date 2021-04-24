@@ -104,7 +104,7 @@ class _GridHomePageState extends State<GridHomePage> {
               padding: EdgeInsets.all(20.0),
               child: Column(
                 children: <Widget>[
-                  //_image_carousel(),
+                  _image_carousel(),
                   //circulo,
 
                   /*Stack(
@@ -215,9 +215,9 @@ class _GridHomePageState extends State<GridHomePage> {
         boxFit: BoxFit.fill,
         //borderRadius: BorderRadiusDirectional.all(20),
         images: [
-          //AssetImage('assets/images/homecustomwall/slide1fm.png'),
-          AssetImage('assets/images/homecustomwall/slide2fm.jpg'),
-          //AssetImage('assets/images/homecustomwall/slide3fm.jpg'),
+          AssetImage('assets/images/homecustomwall/slide1fm.png'),
+          AssetImage('assets/images/homecustomwall/slide2fm.JPG'),
+          AssetImage('assets/images/homecustomwall/slide3fm.JPG'),
         ],
         autoplay: true,
         animationCurve: Curves.fastOutSlowIn,
