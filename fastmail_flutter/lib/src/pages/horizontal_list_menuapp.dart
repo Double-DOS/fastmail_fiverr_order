@@ -8,7 +8,7 @@ class Cotizador_List extends StatelessWidget {
       height: 110.0,
       child: ListView(
         scrollDirection: Axis.horizontal,
-        children: [
+        children: <Widget>[
           Cotizador_Icons(
             image_location: './assets/images/Cotizador.png',
             image_caption: 'P.O. Box',
@@ -20,6 +20,18 @@ class Cotizador_List extends StatelessWidget {
           Cotizador_Icons(
             image_location: './assets/images/MiniCarga.png',
             image_caption: 'Mini Carga',
+          ),
+          Cotizador_Icons(
+            image_location: './assets/images/EnLinea.png',
+            image_caption: 'Pidelo en Linea',
+          ),
+          Cotizador_Icons(
+            image_location: './assets/images/EnLinea.png',
+            image_caption: 'Pidelo en Linea',
+          ),
+          Cotizador_Icons(
+            image_location: './assets/images/EnLinea.png',
+            image_caption: 'Pidelo en Linea',
           ),
           Cotizador_Icons(
             image_location: './assets/images/EnLinea.png',
