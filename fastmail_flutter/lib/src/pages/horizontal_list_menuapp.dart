@@ -78,6 +78,7 @@ class Cotizador_Icons extends StatelessWidget {
                 alignment: Alignment.topCenter,
                 child: Text(
                   image_caption,
+                  textAlign: TextAlign.center,
                   style: new TextStyle(
                     fontSize: 12,
                     color: Colors.white,
