@@ -47,8 +47,8 @@ class __AccountPageState extends State<AccountPage> {
       ),
       body: StreamBuilder(
         // This streamBuilder reads the real-time status of SlimyCard.
-        initialData: false,
-        stream: slimyCard.stream, //Stream of SlimyCard
+        //initialData: false,
+        //stream: slimyCard.stream, //Stream of SlimyCard
         builder: ((BuildContext context, AsyncSnapshot snapshot) {
           return ListView(
             padding: EdgeInsets.zero,

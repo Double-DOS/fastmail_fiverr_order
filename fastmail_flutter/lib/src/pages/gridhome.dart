@@ -1,4 +1,5 @@
-import 'package:fastmail_flutter/src/bloc/hyperlink.dart';
+//import 'package:fastmail_flutter/src/bloc/hyperlink.dart';
+import 'package:fastmail_flutter/src/pages/horizontal_list_menuapp.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,26 +12,26 @@ class GridHomePage extends StatefulWidget {
 
 class _GridHomePageState extends State<GridHomePage> {
   final List<String> _listItem = [
-    './assets/images/Cotizador.png',
-    './assets/images/CotizadorCR.png',
-    './assets/images/Tracking.png',
+    //'./assets/images/Cotizador.png',
+    //'./assets/images/CotizadorCR.png',
     './assets/images/Cuenta.png',
-    './assets/images/MiniCarga.png',
-    './assets/images/EnLinea.png',
+    './assets/images/Tracking.png',
     './assets/images/Notify.png',
     './assets/images/Facebook.png',
     './assets/images/Whatsapp.png',
     './assets/images/Phone.png',
+    //'./assets/images/MiniCarga.png',
+    //'./assets/images/EnLinea.png',
   ];
 
-  final circulo = Container(
+  /*final circulo = Container(
     width: 100.0,
     height: 100.0,
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100.0),
         //color: Color.fromRGBO(255, 255, 255, 0.05)),
         color: Color.fromRGBO(29, 62, 97, 1)),
-  );
+  );*/
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,7 @@ class _GridHomePageState extends State<GridHomePage> {
       appBar: AppBar(
         // toolbarHeight: 150, // Set this height
         backgroundColor: Color.fromRGBO(21, 41, 66, 1),
-        elevation: 0,
+        //elevation: 0,
         //leading: Icon(Icons.menu),
         title: Text("Inicio"),
       ),
@@ -89,7 +90,7 @@ class _GridHomePageState extends State<GridHomePage> {
           children: <Widget>[
             Container(
               width: double.infinity,
-              height: 300,
+              height: 245,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
               ),
@@ -97,8 +98,8 @@ class _GridHomePageState extends State<GridHomePage> {
                 decoration: BoxDecoration(
                   //borderRadius: BorderRadius.circular(20),
                   borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(40),
-                    bottomLeft: Radius.circular(40),
+                    bottomRight: Radius.circular(25),
+                    bottomLeft: Radius.circular(25),
                   ),
                   color: Color.fromRGBO(21, 41, 66, 1),
                 ),
@@ -112,6 +113,34 @@ class _GridHomePageState extends State<GridHomePage> {
               child: Column(
                 children: <Widget>[
                   _image_carousel(),
+                  SizedBox(
+                    height: 22,
+                  ),
+                  SizedBox(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: new Text(
+                        'Cotizadores',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            //backgroundColor:
+                            //Color.fromRGBO(21, 41, 68, 1).withOpacity(0.2),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  Cotizador_List(),
+                  new Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: new Text(
+                      'Menu',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
                   //circulo,
 
                   /*Stack(
@@ -139,9 +168,9 @@ class _GridHomePageState extends State<GridHomePage> {
                       ),*/
                     ],
                   ),*/
-                  SizedBox(
+                  /*SizedBox(
                     height: 100,
-                  ),
+                  ),*/
                   Expanded(
                       child: GridView.count(
                     crossAxisCount: 3,
@@ -223,10 +252,9 @@ class _GridHomePageState extends State<GridHomePage> {
       height: 200,
       child: new Carousel(
         boxFit: BoxFit.fill,
-
-        borderRadius: true,
-
+        //borderRadius: true,
         ///borderRadius: BorderRadiusDirectional.all(20),
+        //borderRadius: BorderRadius.circular(100.0),
         images: [
           AssetImage('assets/images/homecustomwall/slide1fm.png'),
           AssetImage('assets/images/homecustomwall/slide2fm.JPG'),
@@ -236,7 +264,21 @@ class _GridHomePageState extends State<GridHomePage> {
         animationCurve: Curves.fastOutSlowIn,
         animationDuration: Duration(milliseconds: 1000),
         dotSize: 4.0,
-        indicatorBgPadding: 4.0,
+        //indicatorBgPadding: 12.0,
+
+        //dotSize: 4.0,
+        dotSpacing: 15.0,
+        dotColor: Colors.lightBlue,
+        //indicatorBgPadding: 5.0,
+
+        dotBgColor: Colors.blue.withOpacity(0.2),
+        borderRadius: true,
+        //moveIndicatorFromBottom: 180.0,
+        noRadiusForIndicator: true,
+
+        /*overlayShadow: true,
+        overlayShadowColors: Colors.white,
+        overlayShadowSize: 0.7,*/
       ),
     );
   }

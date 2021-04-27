@@ -31,21 +31,11 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
   String _destinovalue;
   String _destinovalue2;
   String _destinovalue3;
-  /*String _subtotal = "";
-  String _total = "";
-  String _totalquetzales = "";
-  String _fleteInterior = "";
-  String _flete = "";
-  String _impuestos = "";
-  String _manejo = "";
-  String _seguro = "";
-  String _almacenaje = "";
-  String _polizamayor = "";*/
+
   @override
   void initState() {
     isPasswordVisible = false;
     isConfirmPasswordVisible = false;
-    //loadarticulos(); //AQUI se carga la lista desplegable
     super.initState();
   }
 

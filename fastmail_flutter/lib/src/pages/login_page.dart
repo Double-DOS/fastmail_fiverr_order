@@ -21,8 +21,8 @@ Future<String> loginn(
     dynamic data1 = jsonDecode(response.body);
     print(data1.toString());
     if (data1['verifica'] == 'false') {
-      /*showAlertDialog(
-            context, "¡" + (data1['message']).replaceAll("#", "ñ") + "!");*/
+      //RAZÓN POR LA CUAL DEVOLVIO ERROR EL LOGIN
+      showMessage(context, "Advertencia", "¡" + data1["messagee"] + "!");
     } else {
       var gName = data1['nombres'];
       var gEmail = data1['email'];
@@ -36,9 +36,33 @@ Future<String> loginn(
       }
     }
   } else {
-    //showAlertDialog(context, "¡Ocurrió un error al obtener datos!");
-    //throw Exception('Failed to get data');
+    showMessage(context, "Advertencia", "¡Error de conexión con el Servidor!");
   }
+}
+
+showMessage(BuildContext context, String _dtittle, String _dmsg) {
+  Widget okButton = FlatButton(
+    child: Text("OK"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text(_dtittle),
+    content: Text(_dmsg),
+    actions: [
+      okButton,
+    ],
+  );
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }
 
 class LoginPage extends StatefulWidget {
