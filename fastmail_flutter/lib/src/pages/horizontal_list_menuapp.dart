@@ -28,14 +28,6 @@ class Cotizador_List extends StatelessWidget {
           Cotizador_Icons(
             image_location: './assets/images/EnLinea.png',
             image_caption: 'Pidelo en Linea',
-          ),
-          Cotizador_Icons(
-            image_location: './assets/images/EnLinea.png',
-            image_caption: 'Pidelo en Linea',
-          ),
-          Cotizador_Icons(
-            image_location: './assets/images/EnLinea.png',
-            image_caption: 'Pidelo en Linea',
           )
         ],
       ),
@@ -59,42 +51,19 @@ class Cotizador_Icons extends StatelessWidget {
           bottomLeft: Radius.circular(45),
         ),*/
         onTap: () {
-          /*if (item == "./assets/images/Cotizador.png") {
-                Navigator.pushNamed(context, 'cotizador');
-              } else if (item ==
-                  "./assets/images/CotizadorCR.png") {
-                Navigator.pushNamed(context, 'cotizadorCR');
-              } else if (item ==
-                  "./assets/images/Tracking.png") {
-                Navigator.pushNamed(context, 'listpackages');
-              } else if (item ==
-                  "./assets/images/Cuenta.png") {
-                Navigator.pushNamed(context, 'account');
-              } else if (item ==
-                  "./assets/images/MiniCarga.png") {
-                Navigator.pushNamed(context, 'minicarga');
-              } else if (item ==
-                  "./assets/images/EnLinea.png") {
-                Navigator.pushNamed(context, 'pidelinea');
-              } else if (item ==
-                  "./assets/images/Facebook.png") {
-                if (await canLaunch(
-                    "https://www.facebook.com/fastmailgt/")) {
-                  await launch(
-                      "https://www.facebook.com/fastmailgt/");
-                }
-              } else if (item ==
-                  "./assets/images/Whatsapp.png") {
-                var whatsappUrl =
-                    "whatsapp://send?phone=+50242440319";
-                await canLaunch(whatsappUrl)
-                    ? launch(whatsappUrl)
-                    : launch(
-                        "https://play.google.com/store/apps/details?id=com.whatsapp&hl=es_GT&gl=US");
-              } else if (item ==
-                  "./assets/images/Phone.png") {
-                launch("tel:+50222464646");
-              }*/
+          if (this.image_location == "./assets/images/Cotizador.png") {
+            Navigator.pushNamed(context, 'cotizador');
+          } else if (this.image_location == "./assets/images/CotizadorCR.png") {
+            Navigator.pushNamed(context, 'cotizadorCR');
+          } else if (this.image_location == "./assets/images/Tracking.png") {
+            Navigator.pushNamed(context, 'listpackages');
+          } else if (this.image_location == "./assets/images/Cuenta.png") {
+            Navigator.pushNamed(context, 'account');
+          } else if (this.image_location == "./assets/images/MiniCarga.png") {
+            Navigator.pushNamed(context, 'minicarga');
+          } else if (this.image_location == "./assets/images/EnLinea.png") {
+            Navigator.pushNamed(context, 'pidelinea');
+          }
         },
         child: Container(
           width: 90.0,
