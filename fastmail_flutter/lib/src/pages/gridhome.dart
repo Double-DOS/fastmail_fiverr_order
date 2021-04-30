@@ -196,16 +196,26 @@ class _GridHomePageState extends State<GridHomePage> {
                               ),
                               onTap: () async {
                                 if (item == "./assets/images/Cotizador.png") {
-                                  Navigator.pushNamed(context, 'cotizador');
+                                  Navigator.pushNamed(context, 'cotizador',
+                                      arguments: {
+                                        "codigo": rcvdData["codigo"],
+                                        "tipocliente": rcvdData["tipocliente"]
+                                      });
                                 } else if (item ==
                                     "./assets/images/CotizadorCR.png") {
                                   Navigator.pushNamed(context, 'cotizadorCR');
                                 } else if (item ==
                                     "./assets/images/Tracking.png") {
-                                  Navigator.pushNamed(context, 'listpackages');
+                                  Navigator.pushNamed(context, 'listpackages',
+                                      arguments: {
+                                        "codigo": rcvdData["codigo"],
+                                      });
                                 } else if (item ==
                                     "./assets/images/Cuenta.png") {
-                                  Navigator.pushNamed(context, 'account');
+                                  Navigator.pushNamed(context, 'account',
+                                      arguments: {
+                                        "codigo": rcvdData["codigo"]
+                                      });
                                 } else if (item ==
                                     "./assets/images/MiniCarga.png") {
                                   Navigator.pushNamed(context, 'minicarga');

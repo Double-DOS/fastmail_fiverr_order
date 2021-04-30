@@ -20,7 +20,9 @@ class __CotizadorPageState extends State<CotizadorPage> {
 
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
-  String _namearticulo;
+  //String _namearticulo;
+  String _codigofm = '';
+  String _tipocliente = '';
   bool _showdetailprice = false;
   bool _fleteinterior = false;
   String _destinovalue;
@@ -35,6 +37,7 @@ class __CotizadorPageState extends State<CotizadorPage> {
   String _almacenaje = "";
   String _polizamayor = "";
   String _nombrearticulo = "";
+
   @override
   void initState() {
     isPasswordVisible = false;
@@ -45,6 +48,10 @@ class __CotizadorPageState extends State<CotizadorPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, Object> rcvdData =
+        ModalRoute.of(context).settings.arguments;
+    _codigofm = rcvdData["codigo"];
+    _tipocliente = rcvdData["tipocliente"];
     return Scaffold(
       backgroundColor: Color.fromRGBO(29, 62, 97, 1),
       appBar: AppBar(
@@ -377,7 +384,6 @@ class __CotizadorPageState extends State<CotizadorPage> {
 
   Future<String> _onTappedButtonCotizar() async {
     var url = Api.baseUrl + Api.cotizador_pobox;
-    //'https://webyte.com.gt/projects/apps/fastmail/executequerys.php';
     if (_myState.toString() != null &&
         _textEditValor.text.toString() != null &&
         _textEditPeso.text.toString() != null &&
@@ -390,21 +396,10 @@ class __CotizadorPageState extends State<CotizadorPage> {
         "valor": _textEditValor.text.toString(),
         "peso": _textEditPeso.text.toString(),
         "destino": _destinovalue,
-        "tipocliente": "Fastmail" //debemos asignar la variable segun el cliente
+        "tipocliente": _tipocliente,
       });
       if (response.statusCode == 200) {
-        /*print("prueba envío" +
-            " " +
-            _myState.toString() +
-            " " +
-            _namearticulo.toString() +
-            " " +
-            _textEditValor.text.toString() +
-            " " +
-            _textEditPeso.text.toString() +
-            " " +
-            _destinovalue);*/
-        //print('resultValidLogin Response: ${response.body}');
+        print('resultValidLogin Response: ${response.body}');
         dynamic data1 = jsonDecode(response.body);
         print(data1.toString());
         print(data1['subtotal'].toString());

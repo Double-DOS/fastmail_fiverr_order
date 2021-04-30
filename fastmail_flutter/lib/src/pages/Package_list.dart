@@ -6,6 +6,7 @@ import 'dart:convert';
 import 'dart:async';
 
 //import 'package:fastmail_flutter/src/bloc/mybullet.dart';
+String codigofm = '';
 
 class PackagelistPage extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class PackagelistPage extends StatefulWidget {
 
 class __PackagelistPageState extends State<PackagelistPage> {
   List<MdlPackList> _packagess;
+  //Future<List<MdlPackList>> __paquetes;
   //static var _keyValidationForm = GlobalKey<FormState>();
   /*TextEditingController _textEditValor = TextEditingController();
   TextEditingController _textEditPeso = TextEditingController();
@@ -24,9 +26,8 @@ class __PackagelistPageState extends State<PackagelistPage> {
 
   @override
   void initState() {
-    _packagess = [];
-    _getListPackages();
     super.initState();
+    _packagess = [];
   }
 
   _showProgress(String message) {
@@ -37,23 +38,31 @@ class __PackagelistPageState extends State<PackagelistPage> {
 
   static Future<List<MdlPackList>> getPackages() async {
     try {
+      print(codigofm);
       String url = Api.baseUrl + Api.queryselects;
       final response = await http.post(url, headers: <String, String>{
         "Accept": "application/json"
       }, body: {
         "identificador": "GETLISTPACKAGES",
         "codpais": "502",
-        "codigo": "53808",
+        "codigo": codigofm,
       });
       print('getEmployees Response: ${response.body}');
       if (200 == response.statusCode) {
-        List<MdlPackList> list = json.decode(response.body);
+        /*final items = json.decode(response.body).cast<Map<String, dynamic>>();
+        List<MdlPackList> paquetes = items.map<MdlPackList>((json) {
+          return MdlPackList.fromJson(json);
+        }).toList();
+
+        return paquetes;*/
+        //List<MdlPackList> list = json.decode(response.body);
+        List<MdlPackList> list = parseResponse(response.body);
         return list;
       } else {
-        return List<MdlPackList>();
+        //return List<MdlPackList>();
       }
     } catch (e) {
-      return List<MdlPackList>(); // return an empty list on exception/error
+      //return List<MdlPackList>(); // return an empty list on exception/error
     }
   }
 
@@ -64,6 +73,13 @@ class __PackagelistPageState extends State<PackagelistPage> {
         .toList();
   }*/
 
+  static List<MdlPackList> parseResponse(String responseBody) {
+    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+    return parsed
+        .map<MdlPackList>((json) => MdlPackList.fromJson(json))
+        .toList();
+  }
+
   _getListPackages() {
     _showProgress('Cargando Paquetes...');
     getPackages().then((paquetess) {
@@ -71,12 +87,16 @@ class __PackagelistPageState extends State<PackagelistPage> {
         _packagess = paquetess;
       });
       _showProgress(widget.title); // Reset the title...
-      print("Length ${paquetess}");
+      print("Length ${_packagess}");
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, Object> rcvdData =
+        ModalRoute.of(context).settings.arguments;
+    codigofm = rcvdData["codigo"];
+    //_getListPackages();
     return Scaffold(
       backgroundColor: Color.fromRGBO(29, 62, 97, 1),
       appBar: AppBar(
@@ -162,54 +182,7 @@ class __PackagelistPageState extends State<PackagelistPage> {
               ),
             )
           ],
-          rows: const <DataRow>[
-            DataRow(
-              /*color: MaterialStateProperty.resolveWith<Color>(
-                  (Set<MaterialState> states) {
-                return Colors.white;
-              }),*/
-              cells: <DataCell>[
-                DataCell(
-                  Text(
-                    '2689429',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    ),
-                  ),
-                ),
-                DataCell(Text(
-                  'BODY WASH  AND CREAM',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  ),
-                )),
-                DataCell(Text(
-                  'En transito a GUA',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  ),
-                )),
-                DataCell(Text(
-                  'JEFF',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  ),
-                )),
-                DataCell(Text(
-                  '2021-02-03 11:44:16',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  ),
-                )),
-              ],
-            ),
-          ],
-          /*_packagess
+          rows: _packagess
               .map(
                 (paquetesmdl) => DataRow(cells: [
                   DataCell(
@@ -284,58 +257,57 @@ class __PackagelistPageState extends State<PackagelistPage> {
                   ))
                 ]),
               )
-              .toList(),*/
+              .toList(),
+
+          /*const <DataRow>[
+            DataRow(
+              /*color: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                return Colors.white;
+              }),*/
+              cells: <DataCell>[
+                DataCell(
+                  Text(
+                    '2689429',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                ),
+                DataCell(Text(
+                  'BODY WASH  AND CREAM',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                  ),
+                )),
+                DataCell(Text(
+                  'En transito a GUA',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                  ),
+                )),
+                DataCell(Text(
+                  'JEFF',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                  ),
+                )),
+                DataCell(Text(
+                  '2021-02-03 11:44:16',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.0,
+                  ),
+                )),
+              ],
+            ),
+          ],*/
         ),
       ),
     );
   }
-
-  /* Widget getWidgetRegistrationCard() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-      child: Card(
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        elevation: 10.0,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _keyValidationForm,
-            child: Column(
-              children: <Widget>[
-                Container(
-                  alignment: Alignment.center,
-                  width: double.infinity,
-                  child: Text(
-                    'Cotizar',
-                    style: TextStyle(fontSize: 18.0, color: Colors.black),
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                Container(
-                  alignment: Alignment.center,
-                  width: double.infinity,
-                  child: Text(
-                    'Cotiza el envío de documentos y/o paquetes a cualquier parte del mundo bajo la modalidad de urgente o normal.',
-                    style: TextStyle(fontSize: 11.0, color: Colors.blue),
-                  ),
-                ),
-                _crearTipo(),
-                _crearEnvioNormalUrgente(),
-                _crearDestinoEnvio(),
-                //_crearValor(),
-                _crearPeso(),
-                //_crearDestino(),
-
-                //getDestino(),
-                _botonCalcular()
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }*/
 }

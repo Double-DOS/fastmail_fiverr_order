@@ -15,7 +15,7 @@ class __AccountPageState extends State<AccountPage> {
   static var _keyValidationForm = GlobalKey<FormState>();
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
-  String _codigofastmail = '53808';
+  String _codigofastmail = '';
   TextEditingController _textEditConName = TextEditingController();
   TextEditingController _textEditApellido = TextEditingController();
   //TextEditingController _textEditDepartamento = TextEditingController();
@@ -29,20 +29,20 @@ class __AccountPageState extends State<AccountPage> {
   void initState() {
     isPasswordVisible = false;
     isConfirmPasswordVisible = false; //AQUI se carga la lista desplegable
-    _getInfoCliente();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, Object> rcvdData =
+        ModalRoute.of(context).settings.arguments;
+    _codigofastmail = rcvdData["codigo"];
+    _getInfoCliente();
     return Scaffold(
       backgroundColor: Color.fromRGBO(29, 62, 97, 1),
       appBar: AppBar(
-        // toolbarHeight: 150, // Set this height
-
         backgroundColor: Color.fromRGBO(29, 62, 97, 1),
         elevation: 0,
-        //leading: Icon(Icons.menu),
         title: Text("Mi Cuenta"),
       ),
       body: StreamBuilder(
@@ -137,43 +137,8 @@ class __AccountPageState extends State<AccountPage> {
     );
   }
 
-  // // This widget will be passed as Bottom Card's Widget.
-  // Widget bottomCardWidget() {
-  //   return Form(
-  //     key: _keyValidationForm,
-  //     child: Column(
-  //       children: <Widget>[
-  //         Container(
-  //           alignment: Alignment.center,
-  //           width: double.infinity,
-  //           child: Text(
-  //             'Crear Cuenta',
-  //             style: TextStyle(fontSize: 19.0, color: Colors.black),
-  //           ),
-  //         ), // title: login
-  //         // _crearNombre(), //text field : user name
-  //         // _crearApellido(),
-  //         // Center(child: _crearDepartamento()),
-  //         // _crearDireccion(),
-  //         // _crearCelular(),
-  //         // _crearEmail(),
-  //         // _crearContrasena(),
-  //         // _crearConfirmContrasena(),
-  //         // _crearNombreFactura(),
-  //         // _crearNit(),
-  //         // _crearServicios(),
-  //         // Center(child: _crearClienteProamerica()),
-  //         // _botonGuardar(),
-  //         // _yatienescuenta(),
-  //       ],
-  //     ),
-  //   );
-  // }
-
   Widget bottomCardWidget() {
-    /*final FocusNode _passwordEmail = FocusNode();
-    final FocusNode _passwordFocus = FocusNode();
-    final FocusNode _passwordConfirmFocus = FocusNode();*/
+    _getInfoCliente();
     return Form(
       key: _keyValidationForm,
       child: Column(
@@ -200,88 +165,6 @@ class __AccountPageState extends State<AccountPage> {
           _botonGuardar(),
         ],
       ),
-    );
-  }
-
-  /*Widget _account(BuildContext context) {
-    final bloc = Provider.of(context);
-    final size = MediaQuery.of(context).size;
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          SafeArea(
-              child: Container(
-            height: 25,
-          )),
-          Container(
-            width: size.width * 0.90,
-            padding: EdgeInsets.symmetric(vertical: 50.0),
-            margin: EdgeInsets.symmetric(vertical: 15.0),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12.0),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 3.0,
-                    offset: Offset(0.0, 5.0),
-                    spreadRadius: 3.0,
-                  )
-                ]),
-            child: Column(
-              children: <Widget>[
-                _dirmiami(),
-                // _botonUpdateData(),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }*/
-
-  Widget _dirmiami() {
-    final circulo = Container(
-      width: 280.0,
-      height: 80.0,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25.0), color: Colors.blue),
-    );
-
-    return Stack(
-      children: <Widget>[
-        Container(
-          child: Column(
-            children: <Widget>[
-              Positioned(top: 50.0, left: 30.0, child: circulo),
-              Text(
-                'Mi dirección en Miami',
-                style: TextStyle(
-                    color: Colors.blue,
-                    fontSize: 25.0,
-                    fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 15.0),
-              Center(
-                child: Table(
-                    // border: TableBorder
-                    //     .all(), // Allows to add a border decoration around your table
-                    children: [
-                      TableRow(children: [
-                        Center(child: Text('Tipo de artículo:')),
-                      ]),
-                      TableRow(children: [
-                        Center(child: Text('Valor:')),
-                      ]),
-                      TableRow(children: [
-                        Center(child: Text('Peso:')),
-                      ]),
-                    ]),
-              ),
-            ],
-          ),
-        )
-      ],
     );
   }
 
@@ -590,7 +473,6 @@ class __AccountPageState extends State<AccountPage> {
 
   Future<String> _getInfoCliente() async {
     var url = Api.baseUrl + Api.queryselects;
-
     final response = await http.post(url, headers: <String, String>{
       "Accept": "application/json"
     }, body: {
@@ -598,17 +480,19 @@ class __AccountPageState extends State<AccountPage> {
       "identificador": "GETINFOPERSONAL",
       "codigo": _codigofastmail
     });
+    print("_getInfoCliente : " + response.body);
     if (response.statusCode == 200) {
       dynamic data1 = jsonDecode(response.body);
       print(data1.toString());
-
-      _textEditConName.text = data1[0]['Nombres'].toString();
-      _textEditApellido.text = data1[0]['Apellidos'].toString();
-      _textEditDireccion.text = data1[0]['Direccion'].toString();
-      _textEditCelular.text = data1[0]['celular'].toString();
-      _textEditConEmail.text = data1[0]['email'].toString();
-      _textEditNombreFactura.text = data1[0]['Nomfactura'].toString();
-      _textEditNit.text = data1[0]['idtributario'].toString();
+      if (data1.toString() != "500") {
+        _textEditConName.text = data1[0]['Nombres'].toString();
+        _textEditApellido.text = data1[0]['Apellidos'].toString();
+        _textEditDireccion.text = data1[0]['Direccion'].toString();
+        _textEditCelular.text = data1[0]['celular'].toString();
+        _textEditConEmail.text = data1[0]['email'].toString();
+        _textEditNombreFactura.text = data1[0]['Nomfactura'].toString();
+        _textEditNit.text = data1[0]['idtributario'].toString();
+      }
     } else {
       //_showdetailprice = false;
     }

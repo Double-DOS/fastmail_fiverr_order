@@ -122,9 +122,14 @@ Future<String> loginn(
     } else {
       var gName = data1['nombres'];
       var gEmail = data1['email'];
+      var gtipocliente = data1['tipocliente'];
       if (data1['tipousuario'] == 'CLIENTE') {
-        Navigator.pushReplacementNamed(context, "homegrid",
-            arguments: {"name": gName, "email": gEmail});
+        Navigator.pushReplacementNamed(context, "homegrid", arguments: {
+          "name": gName,
+          "email": gEmail,
+          "codigo": coduser,
+          "tipocliente": gtipocliente
+        });
       } else if (data1['tipousuario'] == 'ADMIN') {}
     }
   } else {}
@@ -328,6 +333,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Widget _crearDepartamento() {
     return Container(
+      width: MediaQuery.of(context).size.width / 1.1,
+      padding: EdgeInsets.only(top: 3, left: 1, bottom: 2),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -529,6 +536,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Widget _crearServicios() {
     return Container(
+      width: MediaQuery.of(context).size.width / 1.1,
+      padding: EdgeInsets.only(top: 3, left: 1, bottom: 2),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
