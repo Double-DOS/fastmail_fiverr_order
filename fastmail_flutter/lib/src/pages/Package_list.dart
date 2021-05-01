@@ -15,7 +15,9 @@ class PackagelistPage extends StatefulWidget {
 }
 
 class __PackagelistPageState extends State<PackagelistPage> {
-  List<MdlPackList> _packagess;
+  //List<MdlPackList> _packagess;
+  StreamController<List> _streamController = StreamController<List>();
+  Timer _timer;
   //Future<List<MdlPackList>> __paquetes;
   //static var _keyValidationForm = GlobalKey<FormState>();
   /*TextEditingController _textEditValor = TextEditingController();
@@ -27,7 +29,10 @@ class __PackagelistPageState extends State<PackagelistPage> {
   @override
   void initState() {
     super.initState();
-    _packagess = [];
+    getDataPack();
+
+    _timer = Timer.periodic(Duration(seconds: 3), (timer) => getDataPack());
+    //_packagess = [];
   }
 
   _showProgress(String message) {
@@ -36,7 +41,44 @@ class __PackagelistPageState extends State<PackagelistPage> {
     });
   }
 
-  static Future<List<MdlPackList>> getPackages() async {
+  Future getDataPack() async {
+    //var url = 'https://milk-white-reveille.000webhostapp.com/get.php';
+    //http.Response response = await http.get(url);
+
+    String url = Api.baseUrl + Api.queryselects;
+    final response = await http.post(url, headers: <String, String>{
+      "Accept": "application/json"
+    }, body: {
+      "identificador": "GETLISTPACKAGES",
+      "codpais": "502",
+      "codigo": codigofm,
+    });
+    List data = json.decode(response.body);
+    //Add your data to stream
+    _streamController.add(data);
+  }
+
+  @override
+  void dispose() {
+    //cancel the timer
+    if (_timer.isActive) _timer.cancel();
+    super.dispose();
+  }
+
+  /*Future finalgetPackages() async {
+    String url = Api.baseUrl + Api.queryselects;
+    final response = await http.post(url, headers: <String, String>{
+      "Accept": "application/json"
+    }, body: {
+      "identificador": "GETLISTPACKAGES",
+      "codpais": "502",
+      "codigo": codigofm,
+    });
+    print('getEmployees Response: ${response.body}');
+    return json.decode(response.body);
+  }*/
+
+  /*static Future<List<MdlPackList>> getPackages() async {
     try {
       print(codigofm);
       String url = Api.baseUrl + Api.queryselects;
@@ -64,7 +106,7 @@ class __PackagelistPageState extends State<PackagelistPage> {
     } catch (e) {
       //return List<MdlPackList>(); // return an empty list on exception/error
     }
-  }
+  }*/
 
   /*static List<MdlPackList> jsonDecode(String responseBody) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
@@ -80,7 +122,7 @@ class __PackagelistPageState extends State<PackagelistPage> {
         .toList();
   }
 
-  _getListPackages() {
+  /*_getListPackages() {
     _showProgress('Cargando Paquetes...');
     getPackages().then((paquetess) {
       setState(() {
@@ -89,7 +131,7 @@ class __PackagelistPageState extends State<PackagelistPage> {
       _showProgress(widget.title); // Reset the title...
       print("Length ${_packagess}");
     });
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -127,187 +169,43 @@ class __PackagelistPageState extends State<PackagelistPage> {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-          columns: [
-            DataColumn(
-              label: Text(
-                'TRACKING',
-                style: TextStyle(
-                  color: Colors.lightBlue,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'PAQUETE',
-                style: TextStyle(
-                  color: Colors.lightBlue,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'ESTADO',
-                style: TextStyle(
-                  color: Colors.lightBlue,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            // Lets add one more column to show a delete button
-            DataColumn(
-              label: Text(
-                'ORIGEN',
-                style: TextStyle(
-                  color: Colors.lightBlue,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                'FECHA',
-                style: TextStyle(
-                  color: Colors.lightBlue,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            )
-          ],
-          rows: _packagess
-              .map(
-                (paquetesmdl) => DataRow(cells: [
-                  DataCell(
-                    Text(paquetesmdl.tracking),
-                    onTap: () {
-                      /* _showValues(employee);
-                      // Set the Selected employee to Update
-                      _selectedCCliente = employee;
-                      setState(() {
-                        _isUpdating = true;
-                      });*/
-                    },
-                  ),
-                  DataCell(
-                    Text(
-                      paquetesmdl.descpaquete.toUpperCase(),
-                    ),
-                    onTap: () {
-                      /*_showValues(employee);
-                      // Set the Selected employee to Update
-                      _selectedCCliente = employee;
-                      // Set flag updating to true to indicate in Update Mode
-                      setState(() {
-                        _isUpdating = true;
-                      });*/
-                    },
-                  ),
-                  DataCell(
-                    Text(
-                      paquetesmdl.estadoPack.toUpperCase(),
-                    ),
-                    onTap: () {
-                      /*_showValues(employee);
-                      // Set the Selected employee to Update
-                      _selectedCCliente = employee;
-                      setState(() {
-                        _isUpdating = true;
-                      });*/
-                    },
-                  ),
-                  DataCell(
-                    Text(
-                      paquetesmdl.origenPack.toUpperCase(),
-                    ),
-                    onTap: () {
-                      /*_showValues(employee);
-                      // Set the Selected employee to Update
-                      _selectedCCliente = employee;
-                      setState(() {
-                        _isUpdating = true;
-                      });*/
-                    },
-                  ),
-                  DataCell(
-                    Text(
-                      paquetesmdl.fechaUpdStatePack.toUpperCase(),
-                    ),
-                    onTap: () {
-                      /*_showValues(employee);
-                      // Set the Selected employee to Update
-                      _selectedCCliente = employee;
-                      setState(() {
-                        _isUpdating = true;
-                      });*/
-                    },
-                  ),
-                  DataCell(IconButton(
-                    icon: Icon(Icons.upload_file),
-                    onPressed: () {
-                      //_deleteEmployee(employee);
-                    },
-                  ))
-                ]),
-              )
-              .toList(),
+          scrollDirection: Axis.horizontal,
+          child: StreamBuilder<List>(
+            stream: _streamController.stream,
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData)
+                return ListView(
+                  children: [
+                    for (Map document in snapshot.data)
+                      ListTile(
+                        title: Text(document['Articulo']),
+                        subtitle: Text(document['Articulo']),
+                      ),
+                  ],
+                );
+              return Text('Loading...');
+            },
+          )
 
-          /*const <DataRow>[
-            DataRow(
-              /*color: MaterialStateProperty.resolveWith<Color>(
-                  (Set<MaterialState> states) {
-                return Colors.white;
-              }),*/
-              cells: <DataCell>[
-                DataCell(
-                  Text(
-                    '2689429',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    ),
-                  ),
-                ),
-                DataCell(Text(
-                  'BODY WASH  AND CREAM',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  ),
-                )),
-                DataCell(Text(
-                  'En transito a GUA',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  ),
-                )),
-                DataCell(Text(
-                  'JEFF',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  ),
-                )),
-                DataCell(Text(
-                  '2021-02-03 11:44:16',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16.0,
-                  ),
-                )),
-              ],
-            ),
-          ],*/
-        ),
-      ),
+          /*FutureBuilder(
+            future: finalgetPackages(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) print(snapshot.error);
+              return snapshot.hasData
+                  ? ListView.builder(
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (context, index) {
+                        List list = snapshot.data;
+                        return ListTile(
+                          title: Text(list[0]['Articulo']),
+                        );
+                      })
+                  : Center(
+                      child: CircularProgressIndicator(),
+                    );
+            },
+          )*/
+          ),
     );
   }
 }
