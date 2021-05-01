@@ -31,6 +31,7 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
   String _destinovalue;
   String _destinovalue2;
   String _destinovalue3;
+  String _entregadoEn;
 
   @override
   void initState() {
@@ -129,6 +130,7 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
                 //_crearValor(),
                 _crearPeso(),
                 _crearMedidas(),
+                _crearEntregadoEn(),
                 //getDestino(),
                 _botonCalcular()
               ],
@@ -319,6 +321,49 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
                       'Latinoameérica y Caribe',
                       'Europa',
                       'Asia'
+                    ].map((String value) {
+                      return new DropdownMenuItem<String>(
+                        value: value.toString(),
+                        child: new Text(value),
+                      );
+                    }).toList()),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    //FIN LISTA DESPLEGABLE
+  }
+
+  Widget _crearEntregadoEn() {
+    //INICIO LISTA DESPLEGABLE
+    return Container(
+      padding: EdgeInsets.only(left: 15, right: 15, top: 5),
+      color: Colors.white,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            child: DropdownButtonHideUnderline(
+              child: ButtonTheme(
+                alignedDropdown: true,
+                child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: _destinovalue3,
+                    icon: const Icon(Icons.arrow_downward),
+                    iconSize: 24,
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 16,
+                    ),
+                    hint: Text('Entregado en'),
+                    onChanged: (String newValue) {
+                      setState(() => _destinovalue3 = newValue);
+                    },
+                    items: <String>[
+                      'Oficinas Fastmail',
+                      'Domicilio / Oficina',
                     ].map((String value) {
                       return new DropdownMenuItem<String>(
                         value: value.toString(),
