@@ -23,6 +23,7 @@ class __CotizadorCourierPageState extends State<CotizadorCourierPage> {
   String _tipoDP;
   String _envioUrgNormal;
   String _destinoEnvio;
+  String _lugarDWB;
 
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;

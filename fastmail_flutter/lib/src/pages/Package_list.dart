@@ -1,211 +1,161 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
+
+//import 'package:dept_emp_data/Models/employeedata.dart';
 import 'package:fastmail_flutter/src/models/modelPackageList.dart';
 import 'package:fastmail_flutter/src/config/api.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:async';
-
-//import 'package:fastmail_flutter/src/bloc/mybullet.dart';
-String codigofm = '';
 
 class PackagelistPage extends StatefulWidget {
   @override
-  final String title = 'Listado de Paquetes';
   __PackagelistPageState createState() => __PackagelistPageState();
 }
 
 class __PackagelistPageState extends State<PackagelistPage> {
-  //List<MdlPackList> _packagess;
-  StreamController<List> _streamController = StreamController<List>();
-  Timer _timer;
-  //Future<List<MdlPackList>> __paquetes;
-  //static var _keyValidationForm = GlobalKey<FormState>();
-  /*TextEditingController _textEditValor = TextEditingController();
-  TextEditingController _textEditPeso = TextEditingController();
-  TextEditingController _textEditConEmail = TextEditingController();*/
+  List<MdlPackList> emprecord = [];
 
-  String _titleProgress;
+  Future<List<MdlPackList>> _getdeptemp() async {
+    String url = Api.baseUrl + Api.queryselects;
+    final response = await http.post(url, headers: <String, String>{
+      "Accept": "application/json"
+    }, body: {
+      "identificador": "GETLISTPACKAGES",
+      "codpais": "502",
+      "codigo": "53808",
+    });
+    if (response.statusCode == 200) {
+      List paresd = jsonDecode(response.body);
+      return paresd.map((emp) => MdlPackList.fromJson(emp)).toList();
+    }
+  }
 
   @override
   void initState() {
+    _getdeptemp();
     super.initState();
-    getDataPack();
-
-    _timer = Timer.periodic(Duration(seconds: 3), (timer) => getDataPack());
-    //_packagess = [];
   }
-
-  _showProgress(String message) {
-    setState(() {
-      _titleProgress = message;
-    });
-  }
-
-  Future getDataPack() async {
-    //var url = 'https://milk-white-reveille.000webhostapp.com/get.php';
-    //http.Response response = await http.get(url);
-
-    String url = Api.baseUrl + Api.queryselects;
-    final response = await http.post(url, headers: <String, String>{
-      "Accept": "application/json"
-    }, body: {
-      "identificador": "GETLISTPACKAGES",
-      "codpais": "502",
-      "codigo": codigofm,
-    });
-    List data = json.decode(response.body);
-    //Add your data to stream
-    _streamController.add(data);
-  }
-
-  @override
-  void dispose() {
-    //cancel the timer
-    if (_timer.isActive) _timer.cancel();
-    super.dispose();
-  }
-
-  /*Future finalgetPackages() async {
-    String url = Api.baseUrl + Api.queryselects;
-    final response = await http.post(url, headers: <String, String>{
-      "Accept": "application/json"
-    }, body: {
-      "identificador": "GETLISTPACKAGES",
-      "codpais": "502",
-      "codigo": codigofm,
-    });
-    print('getEmployees Response: ${response.body}');
-    return json.decode(response.body);
-  }*/
-
-  /*static Future<List<MdlPackList>> getPackages() async {
-    try {
-      print(codigofm);
-      String url = Api.baseUrl + Api.queryselects;
-      final response = await http.post(url, headers: <String, String>{
-        "Accept": "application/json"
-      }, body: {
-        "identificador": "GETLISTPACKAGES",
-        "codpais": "502",
-        "codigo": codigofm,
-      });
-      print('getEmployees Response: ${response.body}');
-      if (200 == response.statusCode) {
-        /*final items = json.decode(response.body).cast<Map<String, dynamic>>();
-        List<MdlPackList> paquetes = items.map<MdlPackList>((json) {
-          return MdlPackList.fromJson(json);
-        }).toList();
-
-        return paquetes;*/
-        //List<MdlPackList> list = json.decode(response.body);
-        List<MdlPackList> list = parseResponse(response.body);
-        return list;
-      } else {
-        //return List<MdlPackList>();
-      }
-    } catch (e) {
-      //return List<MdlPackList>(); // return an empty list on exception/error
-    }
-  }*/
-
-  /*static List<MdlPackList> jsonDecode(String responseBody) {
-    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-    return parsed
-        .map<MdlPackList>((json) => MdlPackList.fromJson(json))
-        .toList();
-  }*/
-
-  static List<MdlPackList> parseResponse(String responseBody) {
-    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-    return parsed
-        .map<MdlPackList>((json) => MdlPackList.fromJson(json))
-        .toList();
-  }
-
-  /*_getListPackages() {
-    _showProgress('Cargando Paquetes...');
-    getPackages().then((paquetess) {
-      setState(() {
-        _packagess = paquetess;
-      });
-      _showProgress(widget.title); // Reset the title...
-      print("Length ${_packagess}");
-    });
-  }*/
 
   @override
   Widget build(BuildContext context) {
-    final Map<String, Object> rcvdData =
-        ModalRoute.of(context).settings.arguments;
-    codigofm = rcvdData["codigo"];
-    //_getListPackages();
     return Scaffold(
-      backgroundColor: Color.fromRGBO(29, 62, 97, 1),
+      backgroundColor: Colors.white, //fromRGBO(114, 172, 188, 1),
       appBar: AppBar(
-        // toolbarHeight: 150, // Set this height
-
+        centerTitle: true,
+        title: Text("Mis Paquetes"),
         backgroundColor: Color.fromRGBO(29, 62, 97, 1),
-        elevation: 0,
-        //leading: Icon(Icons.menu),
-        title: Text("Listado de Paquetes"),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-            padding: EdgeInsets.only(top: 25.0),
-            child: Column(
-              children: <Widget>[
-                // getWidgetImageLogo(),
-                _dataBody(),
-                //getWidgetPriceCard(),
-              ],
-            )),
-      ),
-    );
-  }
-
-  SingleChildScrollView _dataBody() {
-    // Both Vertical and Horozontal Scrollview for the DataTable to
-    // scroll both Vertical and Horizontal...
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: StreamBuilder<List>(
-            stream: _streamController.stream,
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData)
-                return ListView(
-                  children: [
-                    for (Map document in snapshot.data)
-                      ListTile(
-                        title: Text(document['Articulo']),
-                        subtitle: Text(document['Articulo']),
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: Container(
+                color: Color.fromRGBO(71, 121, 175, 1),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        "Id. Envío",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                    ),
+                    Expanded(
+                      child: Text("Descripción",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                    Expanded(
+                      child: Text("Estado \n Paquete",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                    Expanded(
+                      child: Text("Origen",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                    Expanded(
+                      child: Text("Fecha ",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
                   ],
-                );
-              return Text('Loading...');
-            },
-          )
-
-          /*FutureBuilder(
-            future: finalgetPackages(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) print(snapshot.error);
-              return snapshot.hasData
-                  ? ListView.builder(
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (context, index) {
-                        List list = snapshot.data;
-                        return ListTile(
-                          title: Text(list[0]['Articulo']),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 8,
+              child: Container(
+                child: FutureBuilder(
+                    future: _getdeptemp(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              elevation: 0,
+                              margin: EdgeInsets.all(0),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                        child: Text(
+                                      "${snapshot.data[index].tracking}",
+                                      textAlign: TextAlign.center,
+                                    )),
+                                    Expanded(
+                                        child: Text(
+                                      "${snapshot.data[index].descpaquete}",
+                                      textAlign: TextAlign.center,
+                                    )),
+                                    Expanded(
+                                        child: Text(
+                                      "${snapshot.data[index].estadoPack}",
+                                      textAlign: TextAlign.center,
+                                    )),
+                                    Expanded(
+                                        child: Text(
+                                      "${snapshot.data[index].origenPack}",
+                                      textAlign: TextAlign.center,
+                                    )),
+                                    Expanded(
+                                        child: Text(
+                                      "${snapshot.data[index].fechaUpdStatePack}",
+                                      textAlign: TextAlign.center,
+                                    ))
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
                         );
-                      })
-                  : Center(
-                      child: CircularProgressIndicator(),
-                    );
-            },
-          )*/
-          ),
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    }),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

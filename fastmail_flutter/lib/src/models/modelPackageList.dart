@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
+
 class MdlPackList {
-  final String tracking;
-  final String descpaquete;
-  final String estadoPack;
-  final String origenPack;
-  final String fechaUpdStatePack;
+  String tracking;
+  String descpaquete;
+  String estadoPack;
+  String origenPack;
+  String fechaUpdStatePack;
 
   MdlPackList(
       {this.tracking,
@@ -12,13 +14,11 @@ class MdlPackList {
       this.origenPack,
       this.fechaUpdStatePack});
 
-  factory MdlPackList.fromJson(Map<String, dynamic> jsonData) {
-    return MdlPackList(
-      tracking: jsonData['Tracking'],
-      descpaquete: jsonData['Articulo'],
-      estadoPack: jsonData['Descripstate'],
-      origenPack: jsonData['origenn'],
-      fechaUpdStatePack: jsonData['fechaup'],
-    );
+  MdlPackList.fromJson(Map<String, dynamic> json) {
+    tracking = json['Tracking'];
+    descpaquete = json['Articulo'];
+    estadoPack = json['Descripstate'];
+    origenPack = json['origenn'];
+    fechaUpdStatePack = json['fechaup'];
   }
 }

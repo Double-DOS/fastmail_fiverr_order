@@ -19,13 +19,14 @@ Future<String> loginn(
   if (response.statusCode == 200) {
     print('resultValidLogin Response: ${response.body}');
     dynamic data1 = jsonDecode(response.body);
-    if (data1['verifica'] == 'false') {
+    if (data1['verifica'] == 'false' || data1['verifica'] == '500') {
       showMessage(context, "Advertencia", "¡" + data1["messagee"] + "!");
     } else {
       var gName = data1['nombres'];
       var gEmail = data1['email'];
       var gtipocliente = data1['tipocliente'];
       if (data1['tipousuario'] == 'CLIENTE') {
+        print("okok");
         Navigator.pushReplacementNamed(context, "homegrid", arguments: {
           "name": gName,
           "email": gEmail,
