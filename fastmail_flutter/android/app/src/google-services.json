@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "389796925143",
+    "project_id": "fast-mail-fiverr",
+    "storage_bucket": "fast-mail-fiverr.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:389796925143:android:b5a004541f469f382e2a92",
+        "android_client_info": {
+          "package_name": "com.tiko.fastmail"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "389796925143-4q90ao5u689hsiqhhmtvqu18q3o6s4ro.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3yO-xsst9Kb2upFsMnusORsdRaXjkm38"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "389796925143-4q90ao5u689hsiqhhmtvqu18q3o6s4ro.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

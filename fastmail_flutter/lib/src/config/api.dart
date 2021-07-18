@@ -8,3 +8,5 @@ class Api {
   static const cotizador_pobox = '/cotizadores/cotizador_pobox.php';
   static const queryselects = '/executequerys.php';
 }
+
+

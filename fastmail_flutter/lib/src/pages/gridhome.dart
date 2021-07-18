@@ -1,5 +1,6 @@
 //import 'package:fastmail_flutter/src/bloc/hyperlink.dart';
-import 'package:fastmail_flutter/src/pages/horizontal_list_menuapp.dart';
+import 'package:fastmail_flutter/src/pages/contactsPage.dart';
+import 'package:fastmail_flutter/src/pages/pushNotificationPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -85,172 +86,157 @@ class _GridHomePageState extends State<GridHomePage> {
         ),
       ),
       body: SafeArea(
-        child: Stack(
+        child: Column(
           // padding: EdgeInsets.all(20.0),
           children: <Widget>[
-            Container(
-              width: double.infinity,
-              height: 245,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  //borderRadius: BorderRadius.circular(20),
-                  borderRadius: BorderRadius.only(
-                    bottomRight: Radius.circular(25),
-                    bottomLeft: Radius.circular(25),
-                  ),
-                  color: Color.fromRGBO(21, 41, 66, 1),
-                ),
-              ),
-            ),
+            // Container(
+            //   width: double.infinity,
+            //   height: 245,
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(20),
+            //   ),
+            //   child: Container(
+            //     child: Text('her!'),
+            //     decoration: BoxDecoration(
+            //       //borderRadius: BorderRadius.circular(20),
+            //       borderRadius: BorderRadius.only(
+            //         bottomRight: Radius.circular(25),
+            //         bottomLeft: Radius.circular(25),
+            //       ),
+            //       color: Color.fromRGBO(21, 41, 66, 1),
+            //     ),
+            //   ),
+            // ),
             SizedBox(
               height: 50,
             ),
-            Container(
-              padding: EdgeInsets.all(20.0),
-              child: Column(
-                children: <Widget>[
-                  _image_carousel(),
-                  SizedBox(
-                    height: 22,
-                  ),
-                  SizedBox(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: new Text(
-                        'Cotizadores',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            //backgroundColor:
-                            //Color.fromRGBO(21, 41, 68, 1).withOpacity(0.2),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Cotizador_List(),
-                  new Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: new Text(
-                      'Menu',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  //circulo,
-
-                  /*Stack(
-                    children: <Widget>[
-                      
-                      /*Container(
-                        width: double.infinity,
-                        height: 235,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            image: DecorationImage(
-                                image:
-                                    AssetImage('assets/images/Recuerda2.png'),
-                                fit: BoxFit.cover)),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              gradient: LinearGradient(
-                                  begin: Alignment.bottomRight,
-                                  colors: [
-                                    Colors.black.withOpacity(.4),
-                                    Colors.black.withOpacity(.2),
-                                  ])),
-                        ),
-                      ),*/
-                    ],
-                  ),*/
-                  /*SizedBox(
-                    height: 100,
-                  ),*/
-                  Expanded(
-                      child: GridView.count(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    children: _listItem
-                        .map(
-                          (item) => InkWell(
-                              splashColor: Colors.white,
-                              child: Card(
-                                color: Colors.transparent,
-                                elevation: 0,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      image: DecorationImage(
-                                          image: AssetImage(item),
-                                          fit: BoxFit.cover)),
-                                ),
-                              ),
-                              customBorder: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              onTap: () async {
-                                if (item == "./assets/images/Cotizador.png") {
-                                  Navigator.pushNamed(context, 'cotizador',
-                                      arguments: {
-                                        "codigo": rcvdData["codigo"],
-                                        "tipocliente": rcvdData["tipocliente"]
-                                      });
-                                } else if (item ==
-                                    "./assets/images/CotizadorCR.png") {
-                                  Navigator.pushNamed(context, 'cotizadorCR');
-                                } else if (item ==
-                                    "./assets/images/Tracking.png") {
-                                  Navigator.pushNamed(context, 'listpackages',
-                                      arguments: {
-                                        "codigo": rcvdData["codigo"],
-                                      });
-                                } else if (item ==
-                                    "./assets/images/Cuenta.png") {
-                                  Navigator.pushNamed(context, 'account',
-                                      arguments: {
-                                        "codigo": rcvdData["codigo"]
-                                      });
-                                } else if (item ==
-                                    "./assets/images/MiniCarga.png") {
-                                  Navigator.pushNamed(context, 'minicarga');
-                                } else if (item ==
-                                    "./assets/images/EnLinea.png") {
-                                  Navigator.pushNamed(context, 'pidelinea');
-                                } else if (item ==
-                                    "./assets/images/Facebook.png") {
-                                  if (await canLaunch(
-                                      "https://www.facebook.com/fastmailgt/")) {
-                                    await launch(
-                                        "https://www.facebook.com/fastmailgt/");
-                                  }
-                                } else if (item ==
-                                    "./assets/images/Whatsapp.png") {
-                                  var whatsappUrl =
-                                      "whatsapp://send?phone=+50242440319";
-                                  await canLaunch(whatsappUrl)
-                                      ? launch(whatsappUrl)
-                                      : launch(
-                                          "https://play.google.com/store/apps/details?id=com.whatsapp&hl=es_GT&gl=US");
-                                } else if (item ==
-                                    "./assets/images/Phone.png") {
-                                  launch("tel:+50222464646");
-                                }
-                              }
-                              // _onTappedCard(context, item.toString());
-                              //},
-                              ),
-                        )
-                        .toList(),
-                  ))
-                ],
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _image_carousel(),
+            ),
+            SizedBox(
+              height: 22,
+            ),
+            SizedBox(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new Text(
+                  'Cotizadores',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      //backgroundColor:
+                      //Color.fromRGBO(21, 41, 68, 1).withOpacity(0.2),
+                      fontWeight: FontWeight.bold),
+                ),
               ),
             ),
+
+            //circulo,
+
+            /*Stack(
+              children: <Widget>[
+
+                /*Container(
+                  width: double.infinity,
+                  height: 235,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      image: DecorationImage(
+                          image:
+                              AssetImage('assets/images/Recuerda2.png'),
+                          fit: BoxFit.cover)),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        gradient: LinearGradient(
+                            begin: Alignment.bottomRight,
+                            colors: [
+                              Colors.black.withOpacity(.4),
+                              Colors.black.withOpacity(.2),
+                            ])),
+                  ),
+                ),*/
+              ],
+            ),*/
+            /*SizedBox(
+              height: 100,
+            ),*/
+            Expanded(
+                child: GridView.count(
+              crossAxisCount: 3,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              children: _listItem
+                  .map(
+                    (item) => InkWell(
+                        splashColor: Colors.white,
+                        child: Card(
+                          color: Colors.transparent,
+                          elevation: 0,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                image: DecorationImage(
+                                    image: AssetImage(item),
+                                    fit: BoxFit.cover)),
+                          ),
+                        ),
+                        customBorder: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        onTap: () async {
+                          if (item == "./assets/images/Cotizador.png") {
+                            Navigator.pushNamed(context, 'cotizador',
+                                arguments: {
+                                  "codigo": rcvdData["codigo"],
+                                  "tipocliente": rcvdData["tipocliente"]
+                                });
+                          } else if (item ==
+                              "./assets/images/CotizadorCR.png") {
+                            Navigator.pushNamed(context, 'cotizadorCR');
+                          } else if (item == "./assets/images/Tracking.png") {
+                            Navigator.pushNamed(context, 'listpackages',
+                                arguments: {
+                                  "codigo": rcvdData["codigo"],
+                                });
+                          } else if (item == "./assets/images/Cuenta.png") {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return ContactsPage();
+                            }));
+                          } else if (item == "./assets/images/MiniCarga.png") {
+                            Navigator.pushNamed(context, 'minicarga');
+                          } else if (item == "./assets/images/EnLinea.png") {
+                            Navigator.pushNamed(context, 'pidelinea');
+                          } else if (item == './assets/images/Notify.png') {
+                            Navigator.push(context, MaterialPageRoute(
+                                builder: (BuildContext context) {
+                              return PushNotificationPage();
+                            }));
+                          } else if (item == "./assets/images/Facebook.png") {
+                            if (await canLaunch(
+                                "https://www.facebook.com/fastmailgt/")) {
+                              await launch(
+                                  "https://www.facebook.com/fastmailgt/");
+                            }
+                          } else if (item == "./assets/images/Whatsapp.png") {
+                            var whatsappUrl =
+                                "whatsapp://send?phone=+50242440319";
+                            await canLaunch(whatsappUrl)
+                                ? launch(whatsappUrl)
+                                : launch(
+                                    "https://play.google.com/store/apps/details?id=com.whatsapp&hl=es_GT&gl=US");
+                          } else if (item == "./assets/images/Phone.png") {
+                            launch("tel:+50222464646");
+                          }
+                        }
+                        // _onTappedCard(context, item.toString());
+                        //},
+                        ),
+                  )
+                  .toList(),
+            )),
           ],
         ),
       ),

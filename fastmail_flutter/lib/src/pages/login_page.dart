@@ -1,6 +1,7 @@
 import 'package:fastmail_flutter/src/bloc/provider.dart';
 //import 'package:fastmail_flutter/src/services/services.login.dart';
 import 'package:fastmail_flutter/src/models/model.login.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fastmail_flutter/src/config/api.dart';
 import 'package:http/http.dart' as http;
@@ -12,7 +13,7 @@ final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 Future<String> loginn(
     BuildContext context, String coduser, String passw) async {
   var url = Api.baseUrl + Api.login;
-  final response = await http.post(url,
+  final response = await http.post(Uri.parse(url),
       headers: <String, String>{"Accept": "application/json"},
       body: {"codpais": "502", "codigo": coduser, "contrasena": passw});
   print(response.statusCode);
@@ -75,6 +76,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
