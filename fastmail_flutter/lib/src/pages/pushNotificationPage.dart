@@ -41,35 +41,38 @@ class _PushNotificationPageState extends State<PushNotificationPage> {
           } else {
             List<PushNotification> pushes =
                 snapshot.data.docs.map(_pushFromSnapshot).toList();
-            return ListView.separated(
-              separatorBuilder: (BuildContext context, index) {
-                return Divider(
-                  height: 15,
-                  color: Colors.blue,
-                );
-              },
-              itemBuilder: (BuildContext context, index) {
-                PushNotification push = pushes[index];
-                return ListTile(
-                  leading: Icon(
-                    Icons.notifications,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    push.title,
-                    style: TextStyle(
+            return Padding(
+              padding: const EdgeInsets.only(top: 30.0),
+              child: ListView.separated(
+                separatorBuilder: (BuildContext context, index) {
+                  return Divider(
+                    height: 15,
+                    color: Colors.blue,
+                  );
+                },
+                itemBuilder: (BuildContext context, index) {
+                  PushNotification push = pushes[index];
+                  return ListTile(
+                    leading: Icon(
+                      Icons.notifications,
                       color: Colors.white,
                     ),
-                  ),
-                  subtitle: Text(
-                    push.body,
-                    style: TextStyle(
-                      color: Colors.white,
+                    title: Text(
+                      push.title,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                );
-              },
-              itemCount: pushes.length,
+                    subtitle: Text(
+                      push.body,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  );
+                },
+                itemCount: pushes.length,
+              ),
             );
           }
         },
