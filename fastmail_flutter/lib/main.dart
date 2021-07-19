@@ -39,6 +39,20 @@ class _MyAppState extends State<MyApp> {
         );
       }
     });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print(message.toString());
+      if (message.notification != null) {
+        DatabaseService().addNotification(
+          time: DateTime.now(),
+          body: message.notification.body,
+          title: message.notification.title,
+        );
+      }
+    });
+
+    FirebaseMessaging.onBackgroundMessage(
+        (message) => backgroundHandler(message));
   }
 
   @override
@@ -57,6 +71,17 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(primaryColor: Colors.blue),
         builder: EasyLoading.init(),
       ),
+    );
+  }
+}
+
+//for when app is in background
+Future<void> backgroundHandler(RemoteMessage message) async {
+  if (message.notification != null) {
+    DatabaseService().addNotification(
+      time: DateTime.now(),
+      body: message.notification.body,
+      title: message.notification.title,
     );
   }
 }
