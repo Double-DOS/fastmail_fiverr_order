@@ -1,8 +1,11 @@
 import 'package:fastmail_flutter/src/models/pushNotificationModel.dart';
+import 'package:fastmail_flutter/src/pages/contactsTile.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+
+import 'package:provider/provider.dart';
 
 class ContactsPage extends StatefulWidget {
   @override
@@ -10,8 +13,24 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
+  List<Contact> selectedContacts = [];
+
+  void onSelectContact(Contact contact) {
+    final isSelected = selectedContacts.contains(contact);
+    setState(() {
+      isSelected
+          ? selectedContacts.remove(contact)
+          : selectedContacts.add(contact);
+    });
+  }
+
+  void submitContactList() {
+    print(selectedContacts);
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<Contact> contacts = Provider.of<List<Contact>>(context);
     return Scaffold(
         backgroundColor: Color.fromRGBO(29, 62, 97, 1),
         appBar: AppBar(
@@ -21,51 +40,47 @@ class _ContactsPageState extends State<ContactsPage> {
           //leading: Icon(Icons.menu),
           title: Text("Contacts"),
         ),
-        body: SafeArea(
-            child: FutureBuilder<List<Contact>>(
-          future: _callListApi(),
-          initialData: <Contact>[],
-          builder: (BuildContext context, snapshot) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 30.0),
-              child: ListView.separated(
-                  itemCount: snapshot.data.length,
-                  separatorBuilder: (BuildContext context, index) {
-                    return Divider(
-                      height: 15,
-                      color: Colors.blue,
-                    );
-                  },
-                  itemBuilder: (BuildContext context, index) {
-                    return ListTile(
-                      title: Text(
-                        snapshot.data[index].name,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      leading: CircleAvatar(
-                        backgroundImage:
-                            NetworkImage(snapshot.data[index].avatarUrl),
-                      ),
-                    );
-                  }),
-            );
-          },
-        )));
+        body: Container(
+          child: Column(
+            children: [
+              Container(
+                  child: Container(
+                child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: contacts.length,
+                    separatorBuilder: (BuildContext context, index) {
+                      return Divider(
+                        height: 15,
+                        color: Colors.blue,
+                      );
+                    },
+                    itemBuilder: (BuildContext context, index) {
+                      final isSelected =
+                          selectedContacts.contains(contacts[index]);
+                      return ContactListTile(
+                        contact: contacts[index],
+                        isSelected: isSelected,
+                        onSelectedContact: onSelectContact,
+                      );
+                    }),
+              )),
+              Spacer(),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                child: ElevatedButton(
+                  onPressed: () => submitContactList(),
+                  style: ElevatedButton.styleFrom(
+                      shape: StadiumBorder(),
+                      minimumSize: Size.fromHeight(40),
+                      primary: Colors.white),
+                  child: Text(
+                    'Select ${selectedContacts.length} Contact(s)',
+                    style: TextStyle(color: Colors.blue[300]),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ));
   }
-}
-
-Future<List<Contact>> _callListApi() async {
-  var httpClient = http.Client();
-  var apiUrl = Uri.parse(
-      'https://almandado.com.gt/app/selectquerys_get.php?identificador=CARTERACLIENTES&idcliente=1000');
-  var apiRespnse = await httpClient.get(apiUrl);
-
-  return parseContacts(apiRespnse.body);
-}
-
-List<Contact> parseContacts(String responseBody) {
-  var parsed = convert.json.decode(responseBody);
-  List<Map<String, dynamic>> contactList =
-      new List<Map<String, dynamic>>.from(parsed);
-  return contactList.map((item) => Contact.fromJson(item)).toList();
 }
